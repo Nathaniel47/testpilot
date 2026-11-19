@@ -1,0 +1,20 @@
+{
+  "seed": 20240606,
+  "units_per_repo": 30,
+  "max_methods_per_repo": 8,
+  "dev_fraction": 0.3,
+  "repos": [
+    {"name": "more-itertools", "url": "https://github.com/more-itertools/more-itertools.git", "commit": "e3f79f4fde5f7c107f70a20730b17240a05ba99b", "src": "more_itertools", "licence": "MIT"},
+    {"name": "toolz", "url": "https://github.com/pytoolz/toolz.git", "commit": "451af60dec590a6010e2babdbf391ea8f815122f", "src": "toolz", "licence": "BSD-3-Clause"},
+    {"name": "boltons", "url": "https://github.com/mahmoud/boltons.git", "commit": "d31d821d56c8f7756af9c30a864077f2e5855321", "src": "boltons", "licence": "BSD-3-Clause"},
+    {"name": "cachetools", "url": "https://github.com/tkem/cachetools.git", "commit": "c5de5137153b301933922e47bc70b598970e0627", "src": "src/cachetools", "licence": "MIT"},
+    {"name": "python-slugify", "url": "https://github.com/un33k/python-slugify.git", "commit": "4b6b5b42f050f1ce96899e015247d5e3901cc433", "src": "slugify", "licence": "MIT"},
+    {"name": "humanize", "url": "https://github.com/python-humanize/humanize.git", "commit": "a95004512dde4e8f0269946bb4af754382347441", "src": "src/humanize", "licence": "MIT"},
+    {"name": "tabulate", "url": "https://github.com/astanin/python-tabulate.git", "commit": "268615a5c27dc40e5c22454c07b44d5c50410da0", "src": "tabulate", "licence": "MIT", "include_private": true},
+    {"name": "semver", "url": "https://github.com/python-semver/python-semver.git", "commit": "a4b7d337b1eb699ad4bad532a4b3fc68f8ec2408", "src": "src/semver", "licence": "BSD-3-Clause"},
+    {"name": "sortedcontainers", "url": "https://github.com/grantjenks/python-sortedcontainers.git", "commit": "3ac358631f58c1347f1d6d2d92784117db0f38ed", "src": "src/sortedcontainers", "licence": "Apache-2.0"},
+    {"name": "idna", "url": "https://github.com/kjd/idna.git", "commit": "d357725082245ff90f5cf8800a3fc297b1f2319a", "src": "idna", "licence": "BSD-3-Clause"},
+    {"name": "tomli", "url": "https://github.com/hukkin/tomli.git", "commit": "43a86ade8b795c6ef9b4ec53372a607cd1ed426f", "src": "src/tomli", "licence": "MIT"},
+    {"name": "packaging", "url": "https://github.com/pypa/packaging.git", "commit": "cf2cdf099375f7e208168cd2d8880699aeef0583", "src": "src/packaging", "licence": "Apache-2.0 OR BSD-2-Clause"}
+  ]
+}

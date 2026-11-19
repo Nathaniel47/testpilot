@@ -1,0 +1,172 @@
+{
+ "more-itertools": {
+  "commit": "e3f79f4fde5f7c107f70a20730b17240a05ba99b",
+  "licence_expected": "MIT",
+  "licence_detected": [
+   "MIT"
+  ],
+  "src_lines": 7290,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 260,
+  "eligible": 95,
+  "sampled": 30
+ },
+ "toolz": {
+  "commit": "451af60dec590a6010e2babdbf391ea8f815122f",
+  "licence_expected": "BSD-3-Clause",
+  "licence_detected": [
+   "BSD-3-Clause"
+  ],
+  "src_lines": 3805,
+  "tests_moved": [
+   "toolz/sandbox/tests",
+   "toolz/tests"
+  ],
+  "functions_total": 150,
+  "eligible": 43,
+  "sampled": 30
+ },
+ "boltons": {
+  "commit": "d31d821d56c8f7756af9c30a864077f2e5855321",
+  "licence_expected": "BSD-3-Clause",
+  "licence_detected": [
+   "BSD-3-Clause"
+  ],
+  "src_lines": 17718,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 886,
+  "eligible": 184,
+  "sampled": 30
+ },
+ "cachetools": {
+  "commit": "c5de5137153b301933922e47bc70b598970e0627",
+  "licence_expected": "MIT",
+  "licence_detected": [
+   "MIT"
+  ],
+  "src_lines": 1682,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 176,
+  "eligible": 14,
+  "sampled": 14
+ },
+ "python-slugify": {
+  "commit": "4b6b5b42f050f1ce96899e015247d5e3901cc433",
+  "licence_expected": "MIT",
+  "licence_detected": [
+   "MIT"
+  ],
+  "src_lines": 620,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 16,
+  "eligible": 4,
+  "sampled": 4
+ },
+ "humanize": {
+  "commit": "a95004512dde4e8f0269946bb4af754382347441",
+  "licence_expected": "MIT",
+  "licence_detected": [
+   "MIT"
+  ],
+  "src_lines": 1737,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 37,
+  "eligible": 5,
+  "sampled": 5
+ },
+ "tabulate": {
+  "commit": "268615a5c27dc40e5c22454c07b44d5c50410da0",
+  "licence_expected": "MIT",
+  "licence_detected": [
+   "MIT"
+  ],
+  "src_lines": 3130,
+  "tests_moved": [
+   "test"
+  ],
+  "functions_total": 73,
+  "eligible": 36,
+  "sampled": 30
+ },
+ "semver": {
+  "commit": "a4b7d337b1eb699ad4bad532a4b3fc68f8ec2408",
+  "licence_expected": "BSD-3-Clause",
+  "licence_detected": [
+   "BSD-3-Clause"
+  ],
+  "src_lines": 1635,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 67,
+  "eligible": 15,
+  "sampled": 12
+ },
+ "sortedcontainers": {
+  "commit": "3ac358631f58c1347f1d6d2d92784117db0f38ed",
+  "licence_expected": "Apache-2.0",
+  "licence_detected": [
+   "Apache-2.0"
+  ],
+  "src_lines": 4043,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 127,
+  "eligible": 23,
+  "sampled": 8
+ },
+ "idna": {
+  "commit": "d357725082245ff90f5cf8800a3fc297b1f2319a",
+  "licence_expected": "BSD-3-Clause",
+  "licence_detected": [
+   "BSD-3-Clause"
+  ],
+  "src_lines": 20428,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 47,
+  "eligible": 14,
+  "sampled": 14
+ },
+ "tomli": {
+  "commit": "43a86ade8b795c6ef9b4ec53372a607cd1ed426f",
+  "licence_expected": "MIT",
+  "licence_detected": [
+   "MIT"
+  ],
+  "src_lines": 938,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 39,
+  "eligible": 23,
+  "sampled": 23
+ },
+ "packaging": {
+  "commit": "cf2cdf099375f7e208168cd2d8880699aeef0583",
+  "licence_expected": "Apache-2.0 OR BSD-2-Clause",
+  "licence_detected": [
+   "Apache-2.0",
+   "BSD-2-Clause"
+  ],
+  "src_lines": 13689,
+  "tests_moved": [
+   "tests"
+  ],
+  "functions_total": 500,
+  "eligible": 53,
+  "sampled": 29
+ }
+}

@@ -1,0 +1,13 @@
+services:
+  testpilot:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    mem_limit: 2g
+    pids_limit: 256
+    # Generated tests run inside this container in CI and in the demo; keep it locked down.
+    read_only: true
+    tmpfs: ["/tmp"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]

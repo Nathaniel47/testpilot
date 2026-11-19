@@ -1,0 +1,23 @@
+[project]
+name = "testpilot"
+version = "0.1.0"
+description = "LLM unit-test generator for Python projects, graded by mutation score"
+requires-python = ">=3.11"
+
+[project.scripts]
+testpilot = "testpilot.cli:main"
+
+[tool.setuptools]
+packages = ["testpilot"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"

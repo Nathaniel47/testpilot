@@ -1,5 +1,6 @@
 """Run one generated test file against a repo's source inside the sandbox."""
 
+import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -7,6 +8,7 @@ from pathlib import Path
 from testpilot.sandbox.runner import Sandbox
 
 TEST_FILE = "test_generated.py"
+SANDBOX_PATH = re.compile(r"[^\s'\"]*testpilot_[A-Za-z0-9_]{6,}")
 
 
 @dataclass
@@ -23,9 +25,12 @@ class TestRun:
         return not self.error and not self.failed and bool(self.passed)
 
     def failure_text(self, limit: int = 2500) -> str:
+        """Failure details with the random temp-folder name removed, so prompts cache."""
         if self.error:
-            return self.error[-limit:]
-        return "\n\n".join(f"{n}: {m}" for n, m in self.failed.items())[:limit]
+            text = self.error[-limit:]
+        else:
+            text = "\n\n".join(f"{n}: {m}" for n, m in self.failed.items())[:limit]
+        return SANDBOX_PATH.sub("<sandbox>", text)
 
 
 def run_tests(repo_dir: Path, src: str, test_code: str, timeout: float = 60) -> TestRun:

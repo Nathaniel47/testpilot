@@ -1,6 +1,7 @@
 import argparse
 import json
 from collections import Counter
+from pathlib import Path
 
 from testpilot import __version__, config
 
@@ -24,6 +25,11 @@ def build_parser() -> argparse.ArgumentParser:
     gen.add_argument("--mode", choices=["b0", "m0", "m1"], default="b0")
     gen.add_argument("--provider", choices=["groq", "gemini"], default="groq")
     gen.add_argument("--seed", type=int, default=0)
+    mut = sub.add_parser("mutate", help="mutation-score a test file against one unit")
+    mut.add_argument("unit_id")
+    mut.add_argument("--tests", required=True, help="path to a pytest file for the unit")
+    mut.add_argument("--seed", type=int, default=0)
+    mut.add_argument("--max-mutants", type=int, default=40)
     return parser
 
 
@@ -96,10 +102,39 @@ def cmd_generate(args: argparse.Namespace) -> int:
     return 0 if out.test_code else 1
 
 
+def cmd_mutate(args: argparse.Namespace) -> int:
+    from testpilot.mutation.runner import score_tests
+
+    unit, entry, repo_dir = load_unit(args.unit_id)
+    if unit is None or not repo_dir.is_dir():
+        print("unknown unit id, or repo not downloaded (python -m testpilot.ingest.build_dataset)")
+        return 2
+    code = Path(args.tests).read_text(encoding="utf-8")
+    ref = DATA / "reference_tests" / entry["name"]
+    report = score_tests(
+        repo_dir, entry["src"], unit, code, args.seed, args.max_mutants,
+        reference_dir=ref if ref.is_dir() else None,
+    )  # fmt: skip
+    if not report.ok:
+        print(f"not scored: {report.note}")
+        return 1
+    for r in report.results:
+        state = (
+            "killed" if r.killed else "SURVIVED" + (" (likely equivalent)" if r.equivalent else "")
+        )
+        print(f"line {r.lineno:>4}  {r.operator:<10} {r.detail:<24} {state}")
+    print(
+        f"mutation score {report.score:.2f} ({report.killed}/{report.scored} scored mutants killed)"
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command == "ingest":
         return cmd_ingest(args)
+    if args.command == "mutate":
+        return cmd_mutate(args)
     if args.command == "generate":
         return cmd_generate(args)
     return 0

@@ -130,3 +130,12 @@ def test_unusable_reply_is_counted_not_crashed(repo, tmp_path):
     client, _ = fake_client(tmp_path, ["sorry, I cannot help"])
     out = modes.run_m1(client, ctx_for(repo, "sign"), repo, "pkg")
     assert out.status == "no_code" and out.test_code == ""
+
+
+def test_failure_text_has_no_random_temp_path():
+    from testpilot.sandbox.pytest_run import TestRun
+
+    err = r"File C:\Temp\testpilot_ab12cd34\code\test_generated.py:3: Error"
+    other = err.replace("ab12cd34", "zz99yy88")
+    assert TestRun(error=err).failure_text() == TestRun(error=other).failure_text()
+    assert "testpilot_" not in TestRun(error=err).failure_text()

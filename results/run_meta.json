@@ -1,0 +1,16 @@
+[
+ {
+  "label": "generate-m1",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "seed": 0,
+  "git_commit": "f48c9c374b8a5a34feeae438f7df053db64daf7e",
+  "time_utc": "2026-11-20T13:15:56+00:00",
+  "stats": {
+   "calls": 2,
+   "cache_hits": 0,
+   "tokens": 3114
+  }
+ }
+]

@@ -23,12 +23,14 @@ def groq_complete(model, system, prompt, temperature, seed, max_tokens) -> Compl
     key = config.groq_api_key()
     if not key:
         raise RuntimeError("TESTPILOT_GROQ_API_KEY is not set")
+    extra = {"reasoning_effort": "low"} if "gpt-oss" in model else {}
     resp = Groq(api_key=key).chat.completions.create(
         model=model,
         messages=[{"role": "system", "content": system}, {"role": "user", "content": prompt}],
         temperature=temperature,
         seed=seed,
         max_tokens=max_tokens,
+        **extra,
     )
     use = resp.usage
     text = resp.choices[0].message.content or ""

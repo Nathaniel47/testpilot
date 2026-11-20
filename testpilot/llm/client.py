@@ -8,8 +8,9 @@ from testpilot.llm.budget import Budget
 from testpilot.llm.cache import Cache, cache_key
 from testpilot.llm.providers import PROVIDERS, Completion
 
-# Defaults are NOT yet verified against the live APIs; override with TESTPILOT_<PROVIDER>_MODEL.
-DEFAULT_MODELS = {"groq": "llama-3.3-70b-versatile", "gemini": "gemini-2.0-flash"}
+# The Groq ID was taken from the account model list; Gemini is unverified. Override with
+# TESTPILOT_<PROVIDER>_MODEL.
+DEFAULT_MODELS = {"groq": "openai/gpt-oss-120b", "gemini": "gemini-2.0-flash"}
 DAILY_LIMITS = {"groq": 200_000, "gemini": 1_000_000}
 
 
@@ -19,7 +20,7 @@ class LLMClient:
     model: str = ""
     temperature: float = 0.0
     seed: int = 0
-    max_tokens: int = 1500
+    max_tokens: int = 3000  # reasoning models spend part of this on hidden thinking
     cache: Cache | None = None
     budget: Budget | None = None
     call_fn: object = None  # injectable for tests

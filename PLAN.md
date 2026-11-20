@@ -109,8 +109,8 @@ testpilot/
 | Week | Goal | Done when |
 |---|---|---|
 | 1 | Setup and plan checks (Steps 2-3) | Repo, CI, gitleaks, `.env.example`. Groq and Gemini models verified and recorded. Repo manifest with licences and pinned commits, sampler and saved splits, data report. |
-| 2 | Ingestion and context (Step 4) | Parser, sampler, context builder, sandbox runner, with tests. Template generator produces runnable tests for most units. |
-| 3 | Generation and repair (Step 5.1) | Cached LLM client, M0 and M1, repair loop. Dev-split run started. |
+| 2 | Ingestion and context (Step 4) | Parser, sampler, context builder, sandbox runner, runnability filter, with tests. |
+| 3 | Generation and repair (Step 5.1) | Template generator (moved from Step 4), cached LLM client, M0 and M1, repair loop. Dev-split run started. |
 | 4 | Mutation and scoring (Step 5.2-5.3) | Mutation engine with tests, mutmut cross-check, coverage-guided M2 and mutation-guided M3, scorer. |
 | 5 | CLI, Action, evaluation (Steps 5.4, 6) | CLI, GitHub Action, resumable test-split runs, seeds, charts, limitations. |
 | 6 | Demo and ship (Steps 7-8) | Demo deployed, README, write-up, portfolio card. No new features. |

@@ -81,8 +81,8 @@
    "tests"
   ],
   "functions_total": 37,
-  "eligible": 5,
-  "sampled": 5
+  "eligible": 4,
+  "sampled": 4
  },
  "tabulate": {
   "commit": "268615a5c27dc40e5c22454c07b44d5c50410da0",

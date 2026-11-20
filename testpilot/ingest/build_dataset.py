@@ -10,8 +10,10 @@ from collections import Counter
 from pathlib import Path
 
 from testpilot import config
+from testpilot.context.builder import RepoIndex, build_context
 from testpilot.ingest.clone import detect_licences, fetch_repo, licence_ok, separate_tests
 from testpilot.ingest.parse import Unit, parse_repo
+from testpilot.ingest.runnable import probe_units
 from testpilot.ingest.sampler import sample_units, split_dev_test
 
 DATA = config.ROOT / "data"
@@ -32,8 +34,14 @@ def count_lines(repo_dir: Path, src: str) -> int:
 def process_repo(entry: dict, manifest: dict, repos_dir: Path, ref_dir: Path) -> dict:
     repo_dir = fetch_repo(entry["url"], entry["commit"], repos_dir / entry["name"])
     detected = detect_licences(repo_dir)
+    if not licence_ok(entry["licence"], detected):
+        raise SystemExit(f"Licence check failed for {entry['name']}: {sorted(detected)}")
     moved = separate_tests(repo_dir, ref_dir / entry["name"], entry["src"])
     units = parse_repo(entry["name"], repo_dir, entry["src"], entry.get("include_private", False))
+    index = RepoIndex(repo_dir, entry["src"])
+    candidates = [u for u in units if not u.reasons]
+    for unit_id, problem in probe_units(repo_dir, entry["src"], index, candidates).items():
+        next(u for u in units if u.id == unit_id).reasons.append(problem)
     picked = sample_units(
         units,
         manifest["units_per_repo"],
@@ -42,7 +50,10 @@ def process_repo(entry: dict, manifest: dict, repos_dir: Path, ref_dir: Path) ->
         entry["name"],
     )
     split = split_dev_test(picked, manifest["dev_fraction"], manifest["seed"], entry["name"])
+    unit_rows = {u.id: u.to_dict() for u in picked}
+    contexts = {uid: build_context(row, index) for uid, row in unit_rows.items()}
     return {
+        "contexts": contexts,
         "entry": entry,
         "detected_licences": sorted(detected),
         "licence_ok": licence_ok(entry["licence"], detected),
@@ -84,6 +95,7 @@ def save(results: list[dict], manifest: dict) -> None:
         for u in r["picked"]:
             row = u.to_dict()
             row["split"] = r["split"][u.id]
+            row["context_tokens"] = r["contexts"][u.id].tokens
             rows.append(row)
     out = {
         "seed": manifest["seed"],
@@ -130,13 +142,15 @@ def render_report(results: list[dict], manifest: dict) -> str:
     reasons = Counter(x for r in results for u in r["units"] for x in u.reasons)
     total_units = sum(len(r["units"]) for r in results)
     eligible = sum(1 for r in results for u in r["units"] if not u.reasons)
+    ctxs = [r["contexts"][u.id] for r in results for u in r["picked"]]
+    tokens = [c.tokens for c in ctxs]
     locs = [u.loc for u in picked]
     sites = [u.mutable_sites for u in picked]
     lines = [
         "# Data report",
         "",
         f"Seed {manifest['seed']}. Built by `python -m testpilot.ingest.build_dataset`. "
-        "No repo code is imported or run in this step; files are only parsed.",
+        "Repo code runs only inside the sandbox, and only to import modules (the runnable check).",
         "",
         "## Totals",
         "",
@@ -150,6 +164,10 @@ def render_report(results: list[dict], manifest: dict) -> str:
         f"- Mutation-site count per unit: median {statistics.median(sites)}, "
         f"min {min(sites)}, max {max(sites)}",
         f"- With docstring: {sum(u.has_docstring for u in picked) / len(picked):.0%}",
+        f"- Context size (estimated tokens): median {statistics.median(tokens)}, "
+        f"max {max(tokens)}; units where optional context was dropped to fit the cap: "
+        f"{sum(bool(c.truncated) for c in ctxs)}; with helpers: "
+        f"{sum(bool(c.helpers) for c in ctxs)}; with callers: {sum(bool(c.callers) for c in ctxs)}",
         "",
         "## Per repo",
         "",

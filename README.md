@@ -47,7 +47,7 @@ Keys come only from environment variables (see `.env.example`): `TESTPILOT_GROQ_
 
 ## Datasets and licences
 
-The "data" is 12 open-source Python libraries, fetched at pinned commits (`data/repos.json`) and only parsed in this step. Licences were detected from each repo's own LICENSE file and checked against the manifest by `python -m testpilot.ingest.build_dataset`, which stops if one is missing or not permissive. Each repo's own tests are set aside (`data/reference_tests/`, git-ignored) and used only as a human-written reference. The sample is 229 units (69 dev, 160 test), saved in `data/units.json`; see [results/data_report.md](results/data_report.md).
+The "data" is 12 open-source Python libraries, fetched at pinned commits (`data/repos.json`) and only parsed in the data step. Licences were detected from each repo's own LICENSE file and checked against the manifest by `python -m testpilot.ingest.build_dataset`, which stops if one is missing or not permissive. Each repo's own tests are set aside (`data/reference_tests/`, git-ignored) and used only as a human-written reference. The sample is 228 units (68 dev, 160 test), saved in `data/units.json`; see [results/data_report.md](results/data_report.md).
 
 | Repo | Licence | Commit |
 |---|---|---|
@@ -65,6 +65,10 @@ The "data" is 12 open-source Python libraries, fetched at pinned commits (`data/
 | [packaging](https://github.com/pypa/packaging) | Apache-2.0 OR BSD-2-Clause | `cf2cdf0` |
 
 Rebuild: `python -m testpilot.ingest.build_dataset` (needs network and git; the seed is in `data/repos.json`).
+
+## Ingestion and context
+
+`python -m testpilot.cli ingest` summarises the sampled units; `ingest --context UNIT_ID` prints exactly what the LLM would see for one unit (source, docstring, enclosing class, helpers it calls, callers), capped at a token budget. Units that cannot be imported inside the sandbox are dropped.
 
 ## Safety
 

@@ -1,6 +1,6 @@
 {
  "seed": 20240606,
- "n_units": 229,
+ "n_units": 228,
  "units": [
   {
    "repo": "more-itertools",
@@ -17,7 +17,8 @@
    "mutable_sites": 7,
    "sha256": "7a279acd46697939",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 389
   },
   {
    "repo": "more-itertools",
@@ -34,7 +35,8 @@
    "mutable_sites": 10,
    "sha256": "8420117303d6a261",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 519
   },
   {
    "repo": "more-itertools",
@@ -51,7 +53,8 @@
    "mutable_sites": 4,
    "sha256": "a17e4cce5e5a0d69",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 350
   },
   {
    "repo": "more-itertools",
@@ -68,7 +71,8 @@
    "mutable_sites": 9,
    "sha256": "5c9cfd20634b5601",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 562
   },
   {
    "repo": "more-itertools",
@@ -85,7 +89,8 @@
    "mutable_sites": 9,
    "sha256": "97e1bb5a58b9491a",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 237
   },
   {
    "repo": "more-itertools",
@@ -102,7 +107,8 @@
    "mutable_sites": 3,
    "sha256": "3f0f831ee19aa135",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 458
   },
   {
    "repo": "more-itertools",
@@ -119,7 +125,8 @@
    "mutable_sites": 6,
    "sha256": "ffca2b5e49b800f2",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 495
   },
   {
    "repo": "more-itertools",
@@ -136,7 +143,8 @@
    "mutable_sites": 7,
    "sha256": "21cd261d9ffa76ca",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 361
   },
   {
    "repo": "more-itertools",
@@ -153,7 +161,8 @@
    "mutable_sites": 2,
    "sha256": "92da4878a2b7c551",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 238
   },
   {
    "repo": "more-itertools",
@@ -170,7 +179,8 @@
    "mutable_sites": 7,
    "sha256": "4e0a2f77e8fc610e",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1039
   },
   {
    "repo": "more-itertools",
@@ -187,7 +197,8 @@
    "mutable_sites": 3,
    "sha256": "e787e7811d7a7d85",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 339
   },
   {
    "repo": "more-itertools",
@@ -204,7 +215,8 @@
    "mutable_sites": 4,
    "sha256": "9667541ec113cdfb",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 425
   },
   {
    "repo": "more-itertools",
@@ -221,7 +233,8 @@
    "mutable_sites": 5,
    "sha256": "74c4af56a551e71a",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 270
   },
   {
    "repo": "more-itertools",
@@ -238,7 +251,8 @@
    "mutable_sites": 5,
    "sha256": "4e43a07afb2ca0de",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 348
   },
   {
    "repo": "more-itertools",
@@ -255,7 +269,8 @@
    "mutable_sites": 6,
    "sha256": "abd59db2c33b5ead",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 310
   },
   {
    "repo": "more-itertools",
@@ -272,7 +287,8 @@
    "mutable_sites": 5,
    "sha256": "60f5efd4ff48bc6e",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 361
   },
   {
    "repo": "more-itertools",
@@ -289,7 +305,8 @@
    "mutable_sites": 6,
    "sha256": "47f8ef3625ccfc39",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 298
   },
   {
    "repo": "more-itertools",
@@ -306,7 +323,8 @@
    "mutable_sites": 6,
    "sha256": "e6ec86c534aeef29",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 201
   },
   {
    "repo": "more-itertools",
@@ -323,7 +341,8 @@
    "mutable_sites": 2,
    "sha256": "be8d78a5564cd9db",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 341
   },
   {
    "repo": "more-itertools",
@@ -340,7 +359,8 @@
    "mutable_sites": 3,
    "sha256": "54e9970c0caffdb8",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 777
   },
   {
    "repo": "more-itertools",
@@ -357,7 +377,8 @@
    "mutable_sites": 3,
    "sha256": "3e5cb493113ca3af",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 638
   },
   {
    "repo": "more-itertools",
@@ -374,7 +395,8 @@
    "mutable_sites": 8,
    "sha256": "5c410cfd2ff45441",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 554
   },
   {
    "repo": "more-itertools",
@@ -391,7 +413,8 @@
    "mutable_sites": 15,
    "sha256": "964c70c4fe4da504",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 262
   },
   {
    "repo": "more-itertools",
@@ -408,7 +431,8 @@
    "mutable_sites": 2,
    "sha256": "3efac01e074057d2",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 494
   },
   {
    "repo": "more-itertools",
@@ -425,7 +449,8 @@
    "mutable_sites": 4,
    "sha256": "8bf693f214852bc1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 548
   },
   {
    "repo": "more-itertools",
@@ -442,7 +467,8 @@
    "mutable_sites": 4,
    "sha256": "f914b09e991d3cf1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 560
   },
   {
    "repo": "more-itertools",
@@ -459,7 +485,8 @@
    "mutable_sites": 4,
    "sha256": "76ad3c1a7c5363d7",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 924
   },
   {
    "repo": "more-itertools",
@@ -476,7 +503,8 @@
    "mutable_sites": 10,
    "sha256": "62f5d7ff106e29d8",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 548
   },
   {
    "repo": "more-itertools",
@@ -493,7 +521,8 @@
    "mutable_sites": 3,
    "sha256": "2b7bffc9df686cf7",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 116
   },
   {
    "repo": "more-itertools",
@@ -510,7 +539,8 @@
    "mutable_sites": 3,
    "sha256": "fcc3f49093b9dbf6",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 279
   },
   {
    "repo": "toolz",
@@ -527,7 +557,8 @@
    "mutable_sites": 4,
    "sha256": "a1ef21eddabd6da8",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 348
   },
   {
    "repo": "toolz",
@@ -544,7 +575,8 @@
    "mutable_sites": 2,
    "sha256": "e4926792fe11c323",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 248
   },
   {
    "repo": "toolz",
@@ -561,7 +593,8 @@
    "mutable_sites": 4,
    "sha256": "ac48618b15170397",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 224
   },
   {
    "repo": "toolz",
@@ -578,7 +611,8 @@
    "mutable_sites": 4,
    "sha256": "85aedf53e6e619a9",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 709
   },
   {
    "repo": "toolz",
@@ -595,7 +629,8 @@
    "mutable_sites": 4,
    "sha256": "3778e9781dea6a8b",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 278
   },
   {
    "repo": "toolz",
@@ -612,7 +647,8 @@
    "mutable_sites": 2,
    "sha256": "6b03b6a28f212878",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 357
   },
   {
    "repo": "toolz",
@@ -629,7 +665,8 @@
    "mutable_sites": 4,
    "sha256": "b788b23130c64011",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 265
   },
   {
    "repo": "toolz",
@@ -646,7 +683,8 @@
    "mutable_sites": 3,
    "sha256": "9dc7b440668aed24",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 638
   },
   {
    "repo": "toolz",
@@ -663,7 +701,8 @@
    "mutable_sites": 2,
    "sha256": "09ccac3a809c5c6c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 141
   },
   {
    "repo": "toolz",
@@ -680,7 +719,8 @@
    "mutable_sites": 6,
    "sha256": "1bf159f6e5a7ce34",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 555
   },
   {
    "repo": "toolz",
@@ -697,7 +737,8 @@
    "mutable_sites": 14,
    "sha256": "01783b5832a6e2a1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 769
   },
   {
    "repo": "toolz",
@@ -714,7 +755,8 @@
    "mutable_sites": 4,
    "sha256": "35fee8c038625c38",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 734
   },
   {
    "repo": "toolz",
@@ -731,7 +773,8 @@
    "mutable_sites": 6,
    "sha256": "025894eed1cbfc95",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 467
   },
   {
    "repo": "toolz",
@@ -748,7 +791,8 @@
    "mutable_sites": 2,
    "sha256": "224423b72f4aa12f",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 235
   },
   {
    "repo": "toolz",
@@ -765,7 +809,8 @@
    "mutable_sites": 7,
    "sha256": "2cf2f4aec4d94487",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 569
   },
   {
    "repo": "toolz",
@@ -782,7 +827,8 @@
    "mutable_sites": 11,
    "sha256": "4ca05ac0d7435e26",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 706
   },
   {
    "repo": "toolz",
@@ -799,7 +845,8 @@
    "mutable_sites": 5,
    "sha256": "63679e3c9497bba6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 587
   },
   {
    "repo": "toolz",
@@ -816,7 +863,8 @@
    "mutable_sites": 2,
    "sha256": "09e7caafbdf4843a",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 732
   },
   {
    "repo": "toolz",
@@ -833,7 +881,8 @@
    "mutable_sites": 6,
    "sha256": "ee89bc2e916041ce",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 150
   },
   {
    "repo": "toolz",
@@ -850,7 +899,8 @@
    "mutable_sites": 2,
    "sha256": "b28853e7d9a3fe90",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 90
   },
   {
    "repo": "toolz",
@@ -867,7 +917,8 @@
    "mutable_sites": 7,
    "sha256": "9a0163879c1af941",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 691
   },
   {
    "repo": "toolz",
@@ -884,7 +935,8 @@
    "mutable_sites": 4,
    "sha256": "0f561fdc04c8e83f",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 189
   },
   {
    "repo": "toolz",
@@ -901,7 +953,8 @@
    "mutable_sites": 14,
    "sha256": "550486bda184cf78",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 543
   },
   {
    "repo": "toolz",
@@ -918,7 +971,8 @@
    "mutable_sites": 4,
    "sha256": "1fde30b03d809eeb",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 568
   },
   {
    "repo": "toolz",
@@ -935,7 +989,8 @@
    "mutable_sites": 2,
    "sha256": "b89ead65406aefd4",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 163
   },
   {
    "repo": "toolz",
@@ -952,7 +1007,8 @@
    "mutable_sites": 4,
    "sha256": "4b834b41ae145c3c",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 236
   },
   {
    "repo": "toolz",
@@ -969,7 +1025,8 @@
    "mutable_sites": 3,
    "sha256": "541d27f6d26be446",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 193
   },
   {
    "repo": "toolz",
@@ -986,7 +1043,8 @@
    "mutable_sites": 2,
    "sha256": "372b224c6850b9fd",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 316
   },
   {
    "repo": "toolz",
@@ -1003,7 +1061,8 @@
    "mutable_sites": 2,
    "sha256": "b12d32a3a9532d9d",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 314
   },
   {
    "repo": "toolz",
@@ -1020,7 +1079,8 @@
    "mutable_sites": 2,
    "sha256": "7bc3c0380ec35dc4",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 53
   },
   {
    "repo": "boltons",
@@ -1037,7 +1097,8 @@
    "mutable_sites": 3,
    "sha256": "1478e68072e5f9ad",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 881
   },
   {
    "repo": "boltons",
@@ -1054,7 +1115,8 @@
    "mutable_sites": 2,
    "sha256": "b90020b6a298e9df",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 379
   },
   {
    "repo": "boltons",
@@ -1071,7 +1133,8 @@
    "mutable_sites": 4,
    "sha256": "04bfe837ce0990e9",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 350
   },
   {
    "repo": "boltons",
@@ -1088,7 +1151,8 @@
    "mutable_sites": 6,
    "sha256": "c2b4314cd54ff3a1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 330
   },
   {
    "repo": "boltons",
@@ -1105,7 +1169,8 @@
    "mutable_sites": 3,
    "sha256": "471e523e7382e7b2",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 355
   },
   {
    "repo": "boltons",
@@ -1122,7 +1187,8 @@
    "mutable_sites": 10,
    "sha256": "6094af414d8d2fd6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 843
   },
   {
    "repo": "boltons",
@@ -1139,7 +1205,8 @@
    "mutable_sites": 4,
    "sha256": "6f86c1eb88228dfd",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 452
   },
   {
    "repo": "boltons",
@@ -1156,7 +1223,8 @@
    "mutable_sites": 4,
    "sha256": "20a6350194cd869b",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 656
   },
   {
    "repo": "boltons",
@@ -1173,7 +1241,8 @@
    "mutable_sites": 3,
    "sha256": "129b79864ca0ebaf",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 582
   },
   {
    "repo": "boltons",
@@ -1190,7 +1259,8 @@
    "mutable_sites": 4,
    "sha256": "3817fb31824bbcc4",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 494
   },
   {
    "repo": "boltons",
@@ -1207,7 +1277,8 @@
    "mutable_sites": 5,
    "sha256": "cc3f680f36b7200f",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 714
   },
   {
    "repo": "boltons",
@@ -1224,7 +1295,8 @@
    "mutable_sites": 2,
    "sha256": "ef96673f02ca1235",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 459
   },
   {
    "repo": "boltons",
@@ -1241,7 +1313,8 @@
    "mutable_sites": 2,
    "sha256": "5d3a7a9c078d5148",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 225
   },
   {
    "repo": "boltons",
@@ -1258,7 +1331,8 @@
    "mutable_sites": 7,
    "sha256": "65873edd2c6aaa63",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 177
   },
   {
    "repo": "boltons",
@@ -1275,7 +1349,8 @@
    "mutable_sites": 5,
    "sha256": "2b04d018c868a369",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 634
   },
   {
    "repo": "boltons",
@@ -1292,7 +1367,8 @@
    "mutable_sites": 5,
    "sha256": "7775b48ce6d9ca76",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 285
   },
   {
    "repo": "boltons",
@@ -1309,7 +1385,8 @@
    "mutable_sites": 5,
    "sha256": "7ebd65be06e27cf9",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 489
   },
   {
    "repo": "boltons",
@@ -1326,7 +1403,8 @@
    "mutable_sites": 5,
    "sha256": "74b656a2f8e3f52a",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 506
   },
   {
    "repo": "boltons",
@@ -1343,7 +1421,8 @@
    "mutable_sites": 10,
    "sha256": "e2ff710608320ac2",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 294
   },
   {
    "repo": "boltons",
@@ -1360,7 +1439,8 @@
    "mutable_sites": 4,
    "sha256": "032ad302f2c443d6",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 672
   },
   {
    "repo": "boltons",
@@ -1377,7 +1457,8 @@
    "mutable_sites": 2,
    "sha256": "ebb1397d7c3ccc82",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 130
   },
   {
    "repo": "boltons",
@@ -1394,7 +1475,8 @@
    "mutable_sites": 5,
    "sha256": "2027725430585a65",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 515
   },
   {
    "repo": "boltons",
@@ -1411,7 +1493,8 @@
    "mutable_sites": 2,
    "sha256": "0a37c4102b0050a3",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 345
   },
   {
    "repo": "boltons",
@@ -1428,7 +1511,8 @@
    "mutable_sites": 4,
    "sha256": "06a6ae12ad5aad6d",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 350
   },
   {
    "repo": "boltons",
@@ -1445,7 +1529,8 @@
    "mutable_sites": 2,
    "sha256": "d15eefded09a99a3",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 610
   },
   {
    "repo": "boltons",
@@ -1462,7 +1547,8 @@
    "mutable_sites": 3,
    "sha256": "ae2fce5b2ba88bbf",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 244
   },
   {
    "repo": "boltons",
@@ -1479,7 +1565,8 @@
    "mutable_sites": 2,
    "sha256": "de9397de6109e4e4",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 396
   },
   {
    "repo": "boltons",
@@ -1496,7 +1583,8 @@
    "mutable_sites": 4,
    "sha256": "a87d8d73ddfcc9b5",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 380
   },
   {
    "repo": "boltons",
@@ -1513,7 +1601,8 @@
    "mutable_sites": 4,
    "sha256": "390108003be58745",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 423
   },
   {
    "repo": "boltons",
@@ -1530,7 +1619,8 @@
    "mutable_sites": 4,
    "sha256": "32478388fe9f1e22",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 417
   },
   {
    "repo": "cachetools",
@@ -1547,7 +1637,8 @@
    "mutable_sites": 3,
    "sha256": "8931819056f5b611",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 652
   },
   {
    "repo": "cachetools",
@@ -1564,7 +1655,8 @@
    "mutable_sites": 3,
    "sha256": "c00ebd3a005d021c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 465
   },
   {
    "repo": "cachetools",
@@ -1581,7 +1673,8 @@
    "mutable_sites": 2,
    "sha256": "9f5f2fe01d791cdd",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 521
   },
   {
    "repo": "cachetools",
@@ -1598,7 +1691,8 @@
    "mutable_sites": 2,
    "sha256": "4c5f8a373c248111",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 329
   },
   {
    "repo": "cachetools",
@@ -1615,7 +1709,8 @@
    "mutable_sites": 3,
    "sha256": "9fb6a023b2bafc6c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 433
   },
   {
    "repo": "cachetools",
@@ -1632,7 +1727,8 @@
    "mutable_sites": 2,
    "sha256": "915c66630b6667ee",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 409
   },
   {
    "repo": "cachetools",
@@ -1649,7 +1745,8 @@
    "mutable_sites": 3,
    "sha256": "9789414916113a32",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 331
   },
   {
    "repo": "cachetools",
@@ -1666,7 +1763,8 @@
    "mutable_sites": 4,
    "sha256": "2474b071182d718d",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 265
   },
   {
    "repo": "cachetools",
@@ -1683,7 +1781,8 @@
    "mutable_sites": 4,
    "sha256": "cd6322cdaadddd4c",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 264
   },
   {
    "repo": "cachetools",
@@ -1700,7 +1799,8 @@
    "mutable_sites": 4,
    "sha256": "36e1b796db3ab2d1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 264
   },
   {
    "repo": "cachetools",
@@ -1717,7 +1817,8 @@
    "mutable_sites": 4,
    "sha256": "d46bdd174be03b99",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 80
   },
   {
    "repo": "cachetools",
@@ -1734,7 +1835,8 @@
    "mutable_sites": 4,
    "sha256": "c9ea5a09c9411862",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 81
   },
   {
    "repo": "cachetools",
@@ -1751,7 +1853,8 @@
    "mutable_sites": 4,
    "sha256": "13056551c0c63c23",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 115
   },
   {
    "repo": "cachetools",
@@ -1768,7 +1871,8 @@
    "mutable_sites": 4,
    "sha256": "a21f7798e87627b1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 118
   },
   {
    "repo": "python-slugify",
@@ -1785,7 +1889,8 @@
    "mutable_sites": 21,
    "sha256": "08714c1be3b41f84",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 1333
   },
   {
    "repo": "python-slugify",
@@ -1802,7 +1907,8 @@
    "mutable_sites": 13,
    "sha256": "8807f030cf9e2b2e",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 458
   },
   {
    "repo": "python-slugify",
@@ -1819,7 +1925,8 @@
    "mutable_sites": 8,
    "sha256": "fccd6808901aa65b",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 914
   },
   {
    "repo": "python-slugify",
@@ -1836,24 +1943,8 @@
    "mutable_sites": 4,
    "sha256": "35e6adbfb4345669",
    "reasons": [],
-   "split": "test"
-  },
-  {
-   "repo": "humanize",
-   "id": "humanize:src/humanize/i18n.py:activate",
-   "file": "src/humanize/i18n.py",
-   "qualname": "activate",
-   "kind": "function",
-   "lineno": 59,
-   "end_lineno": 95,
-   "loc": 37,
-   "n_args": 2,
-   "has_docstring": true,
-   "branches": 5,
-   "mutable_sites": 10,
-   "sha256": "414d0b0c519b196a",
-   "reasons": [],
-   "split": "dev"
+   "split": "test",
+   "context_tokens": 203
   },
   {
    "repo": "humanize",
@@ -1870,7 +1961,8 @@
    "mutable_sites": 10,
    "sha256": "0e93cf9ee20b9735",
    "reasons": [],
-   "split": "dev"
+   "split": "test",
+   "context_tokens": 231
   },
   {
    "repo": "humanize",
@@ -1887,7 +1979,8 @@
    "mutable_sites": 7,
    "sha256": "5daee08e9656c536",
    "reasons": [],
-   "split": "test"
+   "split": "dev",
+   "context_tokens": 355
   },
   {
    "repo": "humanize",
@@ -1904,7 +1997,8 @@
    "mutable_sites": 10,
    "sha256": "fa2eb4ea18281238",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 454
   },
   {
    "repo": "humanize",
@@ -1921,7 +2015,8 @@
    "mutable_sites": 6,
    "sha256": "6e88a9682053263a",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 554
   },
   {
    "repo": "tabulate",
@@ -1938,7 +2033,8 @@
    "mutable_sites": 2,
    "sha256": "bfc9288bf60c7dbb",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 787
   },
   {
    "repo": "tabulate",
@@ -1955,7 +2051,8 @@
    "mutable_sites": 13,
    "sha256": "bb9cec603a780df0",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 914
   },
   {
    "repo": "tabulate",
@@ -1972,7 +2069,8 @@
    "mutable_sites": 17,
    "sha256": "419be91ff1cea625",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 343
   },
   {
    "repo": "tabulate",
@@ -1989,7 +2087,8 @@
    "mutable_sites": 9,
    "sha256": "a46944793e6bbfa2",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 492
   },
   {
    "repo": "tabulate",
@@ -2006,7 +2105,8 @@
    "mutable_sites": 3,
    "sha256": "1abbfc46888fcd9a",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 524
   },
   {
    "repo": "tabulate",
@@ -2023,7 +2123,8 @@
    "mutable_sites": 2,
    "sha256": "759234a1ce023f05",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 231
   },
   {
    "repo": "tabulate",
@@ -2040,7 +2141,8 @@
    "mutable_sites": 5,
    "sha256": "531dc031fbd6193e",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 353
   },
   {
    "repo": "tabulate",
@@ -2057,7 +2159,8 @@
    "mutable_sites": 8,
    "sha256": "1616618a6edeff30",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 398
   },
   {
    "repo": "tabulate",
@@ -2074,7 +2177,8 @@
    "mutable_sites": 5,
    "sha256": "0a15854dceba50c9",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 299
   },
   {
    "repo": "tabulate",
@@ -2091,7 +2195,8 @@
    "mutable_sites": 25,
    "sha256": "d34188dba9b70468",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 910
   },
   {
    "repo": "tabulate",
@@ -2108,7 +2213,8 @@
    "mutable_sites": 3,
    "sha256": "c1e709dc8985e6f1",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 240
   },
   {
    "repo": "tabulate",
@@ -2125,7 +2231,8 @@
    "mutable_sites": 18,
    "sha256": "6404ae52e1c04078",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 244
   },
   {
    "repo": "tabulate",
@@ -2142,7 +2249,8 @@
    "mutable_sites": 2,
    "sha256": "62bc1a02f144cc88",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 252
   },
   {
    "repo": "tabulate",
@@ -2159,7 +2267,8 @@
    "mutable_sites": 2,
    "sha256": "9f910598c3b0e4fd",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 185
   },
   {
    "repo": "tabulate",
@@ -2176,7 +2285,8 @@
    "mutable_sites": 10,
    "sha256": "3b68465e6034a6e5",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 547
   },
   {
    "repo": "tabulate",
@@ -2193,7 +2303,8 @@
    "mutable_sites": 5,
    "sha256": "bf5b0372f5db05d6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 235
   },
   {
    "repo": "tabulate",
@@ -2210,7 +2321,8 @@
    "mutable_sites": 2,
    "sha256": "341c766ae9805510",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 341
   },
   {
    "repo": "tabulate",
@@ -2227,7 +2339,8 @@
    "mutable_sites": 10,
    "sha256": "47111063a157c870",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 808
   },
   {
    "repo": "tabulate",
@@ -2244,7 +2357,8 @@
    "mutable_sites": 6,
    "sha256": "37b88babaf32c59d",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 147
   },
   {
    "repo": "tabulate",
@@ -2261,7 +2375,8 @@
    "mutable_sites": 6,
    "sha256": "67838094c9e6e02c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 183
   },
   {
    "repo": "tabulate",
@@ -2278,7 +2393,8 @@
    "mutable_sites": 7,
    "sha256": "f6cc0e8b2987f351",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 282
   },
   {
    "repo": "tabulate",
@@ -2295,7 +2411,8 @@
    "mutable_sites": 3,
    "sha256": "298ccfe3d6decc33",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 259
   },
   {
    "repo": "tabulate",
@@ -2312,7 +2429,8 @@
    "mutable_sites": 18,
    "sha256": "b8e21dc99d9c0b61",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 263
   },
   {
    "repo": "tabulate",
@@ -2329,7 +2447,8 @@
    "mutable_sites": 8,
    "sha256": "119afdee6e361702",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 511
   },
   {
    "repo": "tabulate",
@@ -2346,7 +2465,8 @@
    "mutable_sites": 2,
    "sha256": "b4e7f49f10de3563",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 471
   },
   {
    "repo": "tabulate",
@@ -2363,7 +2483,8 @@
    "mutable_sites": 2,
    "sha256": "f08a07f8ed197cdf",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 637
   },
   {
    "repo": "tabulate",
@@ -2380,7 +2501,8 @@
    "mutable_sites": 2,
    "sha256": "7435455fea221629",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 99
   },
   {
    "repo": "tabulate",
@@ -2397,7 +2519,8 @@
    "mutable_sites": 2,
    "sha256": "582c73ffa4d2f623",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 205
   },
   {
    "repo": "tabulate",
@@ -2414,7 +2537,8 @@
    "mutable_sites": 19,
    "sha256": "6e655c94875c124c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 989
   },
   {
    "repo": "tabulate",
@@ -2431,7 +2555,8 @@
    "mutable_sites": 9,
    "sha256": "d1fde50e7d5c60cb",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1166
   },
   {
    "repo": "semver",
@@ -2448,7 +2573,8 @@
    "mutable_sites": 2,
    "sha256": "ce98e56064db9a4a",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 220
   },
   {
    "repo": "semver",
@@ -2465,7 +2591,8 @@
    "mutable_sites": 2,
    "sha256": "45b935b3707847fe",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 105
   },
   {
    "repo": "semver",
@@ -2482,7 +2609,8 @@
    "mutable_sites": 2,
    "sha256": "e16740cbb2aee1c3",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 669
   },
   {
    "repo": "semver",
@@ -2499,7 +2627,8 @@
    "mutable_sites": 2,
    "sha256": "4b853edcb8c05733",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 253
   },
   {
    "repo": "semver",
@@ -2516,7 +2645,8 @@
    "mutable_sites": 6,
    "sha256": "602b83fe9ae4f924",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1153
   },
   {
    "repo": "semver",
@@ -2533,7 +2663,8 @@
    "mutable_sites": 2,
    "sha256": "0d9c9a194b5ab500",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 487
   },
   {
    "repo": "semver",
@@ -2550,7 +2681,8 @@
    "mutable_sites": 2,
    "sha256": "b91b0832fc021286",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 656
   },
   {
    "repo": "semver",
@@ -2567,7 +2699,8 @@
    "mutable_sites": 11,
    "sha256": "bbf4cd7581258498",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1285
   },
   {
    "repo": "semver",
@@ -2584,7 +2717,8 @@
    "mutable_sites": 10,
    "sha256": "aebeca50f2a541f4",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 616
   },
   {
    "repo": "semver",
@@ -2601,7 +2735,8 @@
    "mutable_sites": 2,
    "sha256": "ced80b549c4bfd68",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 791
   },
   {
    "repo": "semver",
@@ -2618,7 +2753,8 @@
    "mutable_sites": 11,
    "sha256": "e28720b68fb22110",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1210
   },
   {
    "repo": "semver",
@@ -2635,7 +2771,8 @@
    "mutable_sites": 10,
    "sha256": "d94c7d938ab73701",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1408
   },
   {
    "repo": "sortedcontainers",
@@ -2652,7 +2789,8 @@
    "mutable_sites": 3,
    "sha256": "ff818555df8a3b75",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 868
   },
   {
    "repo": "sortedcontainers",
@@ -2669,7 +2807,8 @@
    "mutable_sites": 10,
    "sha256": "84da43039a0027ff",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 764
   },
   {
    "repo": "sortedcontainers",
@@ -2686,7 +2825,8 @@
    "mutable_sites": 11,
    "sha256": "a40dcc33ce0927b8",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 978
   },
   {
    "repo": "sortedcontainers",
@@ -2703,7 +2843,8 @@
    "mutable_sites": 5,
    "sha256": "a76cf0f9b90b92f2",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 660
   },
   {
    "repo": "sortedcontainers",
@@ -2720,7 +2861,8 @@
    "mutable_sites": 5,
    "sha256": "f880cf827c98581e",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1091
   },
   {
    "repo": "sortedcontainers",
@@ -2737,7 +2879,8 @@
    "mutable_sites": 5,
    "sha256": "ae455265b43f6775",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 784
   },
   {
    "repo": "sortedcontainers",
@@ -2754,7 +2897,8 @@
    "mutable_sites": 5,
    "sha256": "ed23fa8e8eba6036",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1117
   },
   {
    "repo": "sortedcontainers",
@@ -2771,7 +2915,8 @@
    "mutable_sites": 3,
    "sha256": "1329ded39f37d93e",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 375
   },
   {
    "repo": "idna",
@@ -2788,7 +2933,8 @@
    "mutable_sites": 4,
    "sha256": "fea3d5f6f2a1cb05",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 452
   },
   {
    "repo": "idna",
@@ -2805,7 +2951,8 @@
    "mutable_sites": 4,
    "sha256": "d2402ec4ab2969e7",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 403
   },
   {
    "repo": "idna",
@@ -2822,7 +2969,8 @@
    "mutable_sites": 5,
    "sha256": "6c07fdedf595dc46",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 159
   },
   {
    "repo": "idna",
@@ -2839,7 +2987,8 @@
    "mutable_sites": 4,
    "sha256": "e745314adafd7088",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 236
   },
   {
    "repo": "idna",
@@ -2856,7 +3005,8 @@
    "mutable_sites": 6,
    "sha256": "f046a92c48d40b8e",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1542
   },
   {
    "repo": "idna",
@@ -2873,7 +3023,8 @@
    "mutable_sites": 3,
    "sha256": "d78054b104fd512f",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 435
   },
   {
    "repo": "idna",
@@ -2890,7 +3041,8 @@
    "mutable_sites": 3,
    "sha256": "d269d9691d9e9379",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 422
   },
   {
    "repo": "idna",
@@ -2907,7 +3059,8 @@
    "mutable_sites": 10,
    "sha256": "cde424bc6bdc9c2f",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 1748
   },
   {
    "repo": "idna",
@@ -2924,7 +3077,8 @@
    "mutable_sites": 25,
    "sha256": "eba8a3a591e64f0c",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 830
   },
   {
    "repo": "idna",
@@ -2941,7 +3095,8 @@
    "mutable_sites": 37,
    "sha256": "895478ad97e8aa9c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 747
   },
   {
    "repo": "idna",
@@ -2958,7 +3113,8 @@
    "mutable_sites": 3,
    "sha256": "1efd40e14450f91d",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 353
   },
   {
    "repo": "idna",
@@ -2975,7 +3131,8 @@
    "mutable_sites": 4,
    "sha256": "ca540d193bb50a6a",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 683
   },
   {
    "repo": "idna",
@@ -2992,7 +3149,8 @@
    "mutable_sites": 8,
    "sha256": "426edad749b9c752",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 559
   },
   {
    "repo": "idna",
@@ -3009,7 +3167,8 @@
    "mutable_sites": 12,
    "sha256": "ec56ebcae28345e4",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 252
   },
   {
    "repo": "tomli",
@@ -3026,7 +3185,8 @@
    "mutable_sites": 14,
    "sha256": "a9aafa5f107dafd6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 814
   },
   {
    "repo": "tomli",
@@ -3043,7 +3203,8 @@
    "mutable_sites": 4,
    "sha256": "130411355b458edd",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 336
   },
   {
    "repo": "tomli",
@@ -3060,7 +3221,8 @@
    "mutable_sites": 5,
    "sha256": "48fba87e228aba67",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 707
   },
   {
    "repo": "tomli",
@@ -3077,7 +3239,8 @@
    "mutable_sites": 4,
    "sha256": "47a267c3c92ce8a1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 593
   },
   {
    "repo": "tomli",
@@ -3094,7 +3257,8 @@
    "mutable_sites": 3,
    "sha256": "9b2325eeb9707e14",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 631
   },
   {
    "repo": "tomli",
@@ -3111,7 +3275,8 @@
    "mutable_sites": 7,
    "sha256": "6e50a5b0cb08aecc",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 682
   },
   {
    "repo": "tomli",
@@ -3128,7 +3293,8 @@
    "mutable_sites": 9,
    "sha256": "5c946b7d7e5a1dd7",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 659
   },
   {
    "repo": "tomli",
@@ -3145,7 +3311,8 @@
    "mutable_sites": 10,
    "sha256": "e232c9b7f2c3af04",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 472
   },
   {
    "repo": "tomli",
@@ -3162,7 +3329,8 @@
    "mutable_sites": 14,
    "sha256": "ad4f1611c6eb76e6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 556
   },
   {
    "repo": "tomli",
@@ -3179,7 +3347,8 @@
    "mutable_sites": 6,
    "sha256": "2b4dae6565ca5724",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 361
   },
   {
    "repo": "tomli",
@@ -3196,7 +3365,8 @@
    "mutable_sites": 12,
    "sha256": "593e6ab08eab6022",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 750
   },
   {
    "repo": "tomli",
@@ -3213,7 +3383,8 @@
    "mutable_sites": 4,
    "sha256": "c4baad25f406e763",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 884
   },
   {
    "repo": "tomli",
@@ -3230,7 +3401,8 @@
    "mutable_sites": 7,
    "sha256": "271c344c45e87181",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 477
   },
   {
    "repo": "tomli",
@@ -3247,7 +3419,8 @@
    "mutable_sites": 3,
    "sha256": "38665f0962888b3e",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 986
   },
   {
    "repo": "tomli",
@@ -3264,7 +3437,8 @@
    "mutable_sites": 2,
    "sha256": "cb65e21d5c3ba6c9",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 544
   },
   {
    "repo": "tomli",
@@ -3281,7 +3455,8 @@
    "mutable_sites": 9,
    "sha256": "f2455c476d2cd30b",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 784
   },
   {
    "repo": "tomli",
@@ -3298,7 +3473,8 @@
    "mutable_sites": 2,
    "sha256": "509ac956031130db",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 577
   },
   {
    "repo": "tomli",
@@ -3315,7 +3491,8 @@
    "mutable_sites": 5,
    "sha256": "920bf52251264d76",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 480
   },
   {
    "repo": "tomli",
@@ -3332,7 +3509,8 @@
    "mutable_sites": 2,
    "sha256": "567f198655ad10f6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 524
   },
   {
    "repo": "tomli",
@@ -3349,7 +3527,8 @@
    "mutable_sites": 3,
    "sha256": "57f1d9023bb38d0a",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 456
   },
   {
    "repo": "tomli",
@@ -3366,7 +3545,8 @@
    "mutable_sites": 6,
    "sha256": "75a1cdbd9d3aab6c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 215
   },
   {
    "repo": "tomli",
@@ -3383,7 +3563,8 @@
    "mutable_sites": 7,
    "sha256": "c4e877ae3d7b17be",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 534
   },
   {
    "repo": "tomli",
@@ -3400,7 +3581,8 @@
    "mutable_sites": 2,
    "sha256": "4adf44c9d996f1ac",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 226
   },
   {
    "repo": "packaging",
@@ -3417,7 +3599,8 @@
    "mutable_sites": 4,
    "sha256": "1becb0bd73be8586",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 596
   },
   {
    "repo": "packaging",
@@ -3434,7 +3617,8 @@
    "mutable_sites": 3,
    "sha256": "a795d2fe5bf9f9c6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 134
   },
   {
    "repo": "packaging",
@@ -3451,7 +3635,8 @@
    "mutable_sites": 5,
    "sha256": "c0dd3661fc2cfddf",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 217
   },
   {
    "repo": "packaging",
@@ -3468,7 +3653,8 @@
    "mutable_sites": 3,
    "sha256": "a8d439963aaab646",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 691
   },
   {
    "repo": "packaging",
@@ -3485,7 +3671,8 @@
    "mutable_sites": 5,
    "sha256": "667ee2f2ec700428",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 602
   },
   {
    "repo": "packaging",
@@ -3502,7 +3689,8 @@
    "mutable_sites": 6,
    "sha256": "ab4721c58ac879e9",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 989
   },
   {
    "repo": "packaging",
@@ -3519,7 +3707,8 @@
    "mutable_sites": 5,
    "sha256": "0d2bd7d281d0eab3",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 561
   },
   {
    "repo": "packaging",
@@ -3536,7 +3725,8 @@
    "mutable_sites": 13,
    "sha256": "c005a15f6bf093db",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 861
   },
   {
    "repo": "packaging",
@@ -3553,7 +3743,8 @@
    "mutable_sites": 8,
    "sha256": "51ff0a313996225a",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 682
   },
   {
    "repo": "packaging",
@@ -3570,7 +3761,8 @@
    "mutable_sites": 19,
    "sha256": "f7602786a1bbb684",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 1061
   },
   {
    "repo": "packaging",
@@ -3587,7 +3779,8 @@
    "mutable_sites": 5,
    "sha256": "2114bea9694c47d4",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 632
   },
   {
    "repo": "packaging",
@@ -3604,7 +3797,8 @@
    "mutable_sites": 8,
    "sha256": "ec30e28791d8b2a1",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 721
   },
   {
    "repo": "packaging",
@@ -3621,7 +3815,8 @@
    "mutable_sites": 7,
    "sha256": "d6d8a58ac3a803b5",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 533
   },
   {
    "repo": "packaging",
@@ -3638,7 +3833,8 @@
    "mutable_sites": 7,
    "sha256": "179f26f5fd24724e",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 566
   },
   {
    "repo": "packaging",
@@ -3655,7 +3851,8 @@
    "mutable_sites": 3,
    "sha256": "6ef6cf7d041b856c",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 433
   },
   {
    "repo": "packaging",
@@ -3672,7 +3869,8 @@
    "mutable_sites": 2,
    "sha256": "6d18fc4229ae256d",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 181
   },
   {
    "repo": "packaging",
@@ -3689,7 +3887,8 @@
    "mutable_sites": 7,
    "sha256": "aed17b7d0a550dc4",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1582
   },
   {
    "repo": "packaging",
@@ -3706,7 +3905,8 @@
    "mutable_sites": 8,
    "sha256": "f02acf5f0c1d864b",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1222
   },
   {
    "repo": "packaging",
@@ -3723,7 +3923,8 @@
    "mutable_sites": 6,
    "sha256": "abd06c39af8be139",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 1499
   },
   {
    "repo": "packaging",
@@ -3740,7 +3941,8 @@
    "mutable_sites": 3,
    "sha256": "13da4df6753f8936",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 853
   },
   {
    "repo": "packaging",
@@ -3757,7 +3959,8 @@
    "mutable_sites": 16,
    "sha256": "c84c0da5eccc5506",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 823
   },
   {
    "repo": "packaging",
@@ -3774,7 +3977,8 @@
    "mutable_sites": 4,
    "sha256": "5ddd0277cc4a7e4b",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 816
   },
   {
    "repo": "packaging",
@@ -3791,7 +3995,8 @@
    "mutable_sites": 12,
    "sha256": "24e067f2c8115f47",
    "reasons": [],
-   "split": "dev"
+   "split": "dev",
+   "context_tokens": 1818
   },
   {
    "repo": "packaging",
@@ -3808,7 +4013,8 @@
    "mutable_sites": 9,
    "sha256": "559a310452a84c48",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1149
   },
   {
    "repo": "packaging",
@@ -3825,7 +4031,8 @@
    "mutable_sites": 4,
    "sha256": "35eed143c8691aa4",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1188
   },
   {
    "repo": "packaging",
@@ -3842,7 +4049,8 @@
    "mutable_sites": 4,
    "sha256": "9b494420f53067b6",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 984
   },
   {
    "repo": "packaging",
@@ -3859,7 +4067,8 @@
    "mutable_sites": 4,
    "sha256": "fb5b0c4ff59699c0",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 524
   },
   {
    "repo": "packaging",
@@ -3876,7 +4085,8 @@
    "mutable_sites": 2,
    "sha256": "572833d937d74555",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 350
   },
   {
    "repo": "packaging",
@@ -3893,7 +4103,8 @@
    "mutable_sites": 13,
    "sha256": "00b4e905acd18ee0",
    "reasons": [],
-   "split": "test"
+   "split": "test",
+   "context_tokens": 1432
   }
  ]
 }

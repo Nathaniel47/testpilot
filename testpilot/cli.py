@@ -20,9 +20,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     ingest.add_argument("--context", metavar="UNIT_ID", help="print the LLM context for a unit")
     ingest.add_argument("--token-cap", type=int, default=3000)
-    gen = sub.add_parser("generate", help="generate tests for one unit (B0 offline, M0, M1)")
+    gen = sub.add_parser("generate", help="generate tests for one unit (B0 offline, M0-M3)")
     gen.add_argument("unit_id")
-    gen.add_argument("--mode", choices=["b0", "m0", "m1"], default="b0")
+    gen.add_argument("--mode", choices=["b0", "m0", "m1", "m2", "m3"], default="b0")
     gen.add_argument("--provider", choices=["groq", "gemini"], default="groq")
     gen.add_argument("--seed", type=int, default=0)
     mut = sub.add_parser("mutate", help="mutation-score a test file against one unit")
@@ -30,6 +30,10 @@ def build_parser() -> argparse.ArgumentParser:
     mut.add_argument("--tests", required=True, help="path to a pytest file for the unit")
     mut.add_argument("--seed", type=int, default=0)
     mut.add_argument("--max-mutants", type=int, default=40)
+    cmp = sub.add_parser("compare", help="table comparing generation modes on scored units")
+    cmp.add_argument("--modes", nargs="+", default=["b0", "m0", "m1", "m2", "m3"])
+    cmp.add_argument("--seed", type=int, default=0)
+    cmp.add_argument("--out", help="also write the table to this markdown file")
     return parser
 
 
@@ -72,7 +76,7 @@ def load_unit(unit_id: str):
 
 def cmd_generate(args: argparse.Namespace) -> int:
     from testpilot.context.builder import RepoIndex, build_context
-    from testpilot.generate import modes
+    from testpilot.generate import guided, modes
     from testpilot.llm.budget import EXIT_BUDGET, BudgetExceeded
 
     unit, entry, repo_dir = load_unit(args.unit_id)
@@ -87,9 +91,13 @@ def cmd_generate(args: argparse.Namespace) -> int:
         from testpilot.llm.meta import record_run
 
         client = LLMClient(provider=args.provider, seed=args.seed)
-        run = modes.run_m0 if args.mode == "m0" else modes.run_m1
         try:
-            out = run(client, ctx, repo_dir, entry["src"])
+            if args.mode in ("m2", "m3"):
+                run = guided.run_m2 if args.mode == "m2" else guided.run_m3
+                out = run(client, ctx, repo_dir, entry["src"], unit)
+            else:
+                run = modes.run_m0 if args.mode == "m0" else modes.run_m1
+                out = run(client, ctx, repo_dir, entry["src"])
         except BudgetExceeded as exc:
             print(exc)
             return EXIT_BUDGET
@@ -129,10 +137,28 @@ def cmd_mutate(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_compare(args: argparse.Namespace) -> int:
+    from testpilot.report.tables import comparison_markdown, load_scores
+    from testpilot.score.batch import score_dir
+
+    scores = {m: load_scores(score_dir(m, args.seed)) for m in args.modes}
+    scores = {m: rows for m, rows in scores.items() if rows}
+    if not scores:
+        print("no scored units yet; run: python -m testpilot.score.batch --mode b0")
+        return 1
+    text = comparison_markdown(scores, args.seed)
+    print(text)
+    if args.out:
+        Path(args.out).write_text(text, encoding="utf-8")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command == "ingest":
         return cmd_ingest(args)
+    if args.command == "compare":
+        return cmd_compare(args)
     if args.command == "mutate":
         return cmd_mutate(args)
     if args.command == "generate":

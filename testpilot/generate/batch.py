@@ -10,7 +10,7 @@ from pathlib import Path
 
 from testpilot import config
 from testpilot.context.builder import RepoIndex, build_context
-from testpilot.generate import modes
+from testpilot.generate import guided, modes
 from testpilot.llm.budget import EXIT_BUDGET, BudgetExceeded
 
 DATA = config.ROOT / "data"
@@ -18,7 +18,7 @@ DATA = config.ROOT / "data"
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", choices=["b0", "m0", "m1"], required=True)
+    ap.add_argument("--mode", choices=["b0", "m0", "m1", "m2", "m3"], required=True)
     ap.add_argument("--split", choices=["dev", "test", "all"], default="dev")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--provider", default="groq")
@@ -51,6 +51,9 @@ def main(argv=None) -> int:
         try:
             if args.mode == "b0":
                 out = modes.run_b0(ctx, repo_dir, entry["src"])
+            elif args.mode in ("m2", "m3"):
+                run = guided.run_m2 if args.mode == "m2" else guided.run_m3
+                out = run(client, ctx, repo_dir, entry["src"], unit)
             else:
                 run = modes.run_m0 if args.mode == "m0" else modes.run_m1
                 out = run(client, ctx, repo_dir, entry["src"])

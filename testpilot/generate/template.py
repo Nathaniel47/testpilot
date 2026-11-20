@@ -7,7 +7,6 @@ fail on the original code, exactly as it does for LLM tests.
 
 import ast
 import doctest
-import textwrap
 
 HINT_VALUES = {
     "int": ["2", "0", "-3"],
@@ -99,7 +98,11 @@ def _smoke_tests(node: ast.FunctionDef, qualname: str) -> list[str]:
 
 def generate_template_tests(module: str, qualname: str, source: str) -> str:
     """Return a pytest file for one unit, built only from its source text."""
-    node = ast.parse(textwrap.dedent(source)).body[0]
+    # "if 1:" accepts any indentation, even when docstring lines sit at column 0.
+    if source[:1].isspace():
+        node = ast.parse("if 1:" + chr(10) + source).body[0].body[0]
+    else:
+        node = ast.parse(source).body[0]
     doc = ast.get_docstring(node) or ""
     safe = qualname.replace(".", "_")
     tests = _valid(_doctest_tests(doc, safe))

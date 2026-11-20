@@ -139,3 +139,9 @@ def test_failure_text_has_no_random_temp_path():
     other = err.replace("ab12cd34", "zz99yy88")
     assert TestRun(error=err).failure_text() == TestRun(error=other).failure_text()
     assert "testpilot_" not in TestRun(error=err).failure_text()
+
+
+def test_template_handles_indented_method_with_unindented_docstring_lines():
+    src = '    def m(self, x):\n        """Doc.\n\n>>> 1 + 1\n2\n"""\n        return x\n'
+    code = generate_template_tests("pkg.lib", "C.m", src)
+    assert "docstring_examples" in code

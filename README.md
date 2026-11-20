@@ -74,6 +74,10 @@ Rebuild: `python -m testpilot.ingest.build_dataset` (needs network and git; the 
 
 `python -m testpilot.cli generate UNIT_ID --mode b0|m0|m1` (b0 = offline template, m0 = one LLM call, m1 = plus up to 3 repair rounds). `python -m testpilot.generate.batch --mode b0 --split dev` runs a whole split and resumes if stopped. LLM modes need `TESTPILOT_GROQ_API_KEY` or `TESTPILOT_GEMINI_API_KEY`; answers are cached in `llm_cache/` and the daily token budget stops at 95% (exit code 75).
 
+## Scoring and comparing modes
+
+`python -m testpilot.cli mutate UNIT_ID --tests FILE` mutation-scores a test file. `python -m testpilot.score.batch --mode m3 --split dev` scores every generated unit (line and branch coverage, mutation score), and `python -m testpilot.cli compare` prints the table of modes B0, M0 to M3 with 95% bootstrap intervals. M2 is coverage-guided, M3 is mutation-guided. See LEARNING.md.
+
 ## Safety
 
 Generated tests and target code run only in a sandbox (separate process, time and memory limits, empty environment, temporary folder; Docker in CI). Only open-source code and no real personal data are used.

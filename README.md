@@ -92,6 +92,10 @@ Rebuild: `python -m testpilot.ingest.build_dataset` (needs network and git; the 
 
 It tests the functions changed in the PR and writes the mutation score to the job summary. Commands: `testpilot check|generate|repair|mutate|compare|report|ingest`.
 
+## Demo
+
+`streamlit run app/streamlit_app.py` (offline, no key). Deployment steps for a free Hugging Face Space are in [DEPLOY.md](DEPLOY.md).
+
 ## Safety
 
 Generated tests and target code run only in a sandbox (separate process, time and memory limits, empty environment, temporary folder; Docker in CI). Only open-source code and no real personal data are used.

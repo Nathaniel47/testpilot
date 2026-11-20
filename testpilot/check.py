@@ -56,7 +56,13 @@ def check(
             out = guided.run_m3(client, ctx, repo_dir, src, unit)
         row = score_unit(repo_dir, src, unit, out.test_code, seed=seed)
         rows.append(
-            row | {"qualname": unit["qualname"], "file": unit["file"], "tokens": out.tokens}
+            row
+            | {
+                "qualname": unit["qualname"],
+                "file": unit["file"],
+                "tokens": out.tokens,
+                "test_code": out.test_code,
+            }
         )
     return rows
 

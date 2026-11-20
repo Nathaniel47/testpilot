@@ -28,6 +28,11 @@ def main(argv=None) -> int:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--flaky", action="store_true", help="also rerun tests 3 times")
+    ap.add_argument(
+        "--flag-equivalent",
+        action="store_true",
+        help="flag survivors that also pass the repo's own tests (slow: reruns that suite)",
+    )
     args = ap.parse_args(argv)
 
     units = json.loads((DATA / "units.json").read_text(encoding="utf-8"))["units"]
@@ -51,7 +56,7 @@ def main(argv=None) -> int:
             entry["src"],
             unit,
             outcome["test_code"],
-            reference_dir=ref if ref.is_dir() else None,
+            reference_dir=ref if args.flag_equivalent and ref.is_dir() else None,
             check_flaky=args.flaky,
         )
         row |= {"tokens": outcome["tokens"], "calls": outcome["calls"], "repo": unit["repo"]}

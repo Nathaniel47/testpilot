@@ -47,9 +47,10 @@ def build_parser() -> argparse.ArgumentParser:
     rep.add_argument("unit_id")
     rep.add_argument("--tests", required=True)
     rep.add_argument("--provider", choices=["groq", "gemini"], default="groq")
-    rpt = sub.add_parser("report", help="write the comparison table to results/comparison.md")
+    rpt = sub.add_parser("report", help="write results/evaluation.md, limitations.md and charts")
     rpt.add_argument("--modes", nargs="+", default=["b0", "m0", "m1", "m2", "m3"])
-    rpt.add_argument("--seed", type=int, default=0)
+    rpt.add_argument("--split", choices=["dev", "test", "all"], default="dev")
+    rpt.add_argument("--seeds", nargs="+", type=int, default=[0])
     return parser
 
 
@@ -206,8 +207,14 @@ def cmd_repair(args: argparse.Namespace) -> int:
 
 
 def cmd_report(args: argparse.Namespace) -> int:
-    args.out = str(config.ROOT / "results" / "comparison.md")
-    return cmd_compare(args)
+    from testpilot.report.evaluation import build
+
+    text = build(args.split, args.seeds, args.modes)
+    if text is None:
+        print("no scored units yet; run: python -m testpilot.evaluate --modes b0 --split dev")
+        return 1
+    print("wrote results/evaluation.md, results/limitations.md and three charts")
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:

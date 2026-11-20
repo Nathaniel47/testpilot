@@ -78,6 +78,20 @@ Rebuild: `python -m testpilot.ingest.build_dataset` (needs network and git; the 
 
 `python -m testpilot.cli mutate UNIT_ID --tests FILE` mutation-scores a test file. `python -m testpilot.score.batch --mode m3 --split dev` scores every generated unit (line and branch coverage, mutation score), and `python -m testpilot.cli compare` prints the table of modes B0, M0 to M3 with 95% bootstrap intervals. M2 is coverage-guided, M3 is mutation-guided. See LEARNING.md.
 
+## GitHub Action
+
+```yaml
+- uses: actions/checkout@v4
+  with: { fetch-depth: 0 }
+- uses: Nathaniel47/testpilot/action@main
+  with:
+    src: src/mylib          # package to analyse
+    mode: b0                # b0 = offline, no key; m1 / m3 need groq-api-key
+    base-ref: origin/main
+```
+
+It tests the functions changed in the PR and writes the mutation score to the job summary. Commands: `testpilot check|generate|repair|mutate|compare|report|ingest`.
+
 ## Safety
 
 Generated tests and target code run only in a sandbox (separate process, time and memory limits, empty environment, temporary folder; Docker in CI). Only open-source code and no real personal data are used.

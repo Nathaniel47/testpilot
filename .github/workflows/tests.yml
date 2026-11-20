@@ -25,3 +25,16 @@ jobs:
           docker run --rm --read-only --tmpfs /tmp --cap-drop ALL \
             --security-opt no-new-privileges:true --memory 2g \
             --entrypoint python testpilot -m pytest -p no:cacheprovider
+  action-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run the TestPilot action on the bundled sample library (offline mode)
+        uses: ./action
+        with:
+          src: examples/sample_lib
+          files: examples/sample_lib/shapes.py
+          mode: b0
+          max-units: "2"

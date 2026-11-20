@@ -1,0 +1,56 @@
+name: TestPilot mutation score
+description: >
+  Generate unit tests for the Python functions changed in a pull request, run them in a
+  sandbox, and post the mutation score (how many injected bugs the tests catch) as a job summary.
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  src:
+    description: Package folder to analyse, relative to the repository root (for example src/mylib)
+    required: true
+  mode:
+    description: "b0 = offline template tests (no API key); m1 = LLM tests with repair; m3 = mutation-guided"
+    default: b0
+  base-ref:
+    description: Git ref to diff against to find changed files
+    default: origin/main
+  files:
+    description: Space-separated .py files to test instead of diffing against base-ref
+    default: ""
+  max-units:
+    description: Most functions to test per run (keeps the job short)
+    default: "5"
+  groq-api-key:
+    description: Needed only for modes m1 and m3. Pass it from a repository secret.
+    required: false
+    default: ""
+  python-version:
+    description: Python version to run TestPilot with
+    default: "3.11"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install TestPilot
+      shell: bash
+      run: pip install -r "${{ github.action_path }}/../requirements.txt"
+    - name: Test and score changed functions
+      shell: bash
+      env:
+        PYTHONPATH: ${{ github.action_path }}/..
+        TESTPILOT_GROQ_API_KEY: ${{ inputs.groq-api-key }}
+        TESTPILOT_CACHE_DIR: ${{ runner.temp }}/testpilot_cache
+        TESTPILOT_WORK_DIR: ${{ runner.temp }}/testpilot_work
+      run: |
+        python -m testpilot.cli check \
+          --repo-dir "$GITHUB_WORKSPACE" \
+          --src "${{ inputs.src }}" \
+          ${{ inputs.files != '' && format('--files {0}', inputs.files) || format('--base-ref {0}', inputs.base-ref) }} \
+          --mode "${{ inputs.mode }}" \
+          --max-units "${{ inputs.max-units }}" \
+          --summary "$GITHUB_STEP_SUMMARY"

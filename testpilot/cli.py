@@ -34,6 +34,22 @@ def build_parser() -> argparse.ArgumentParser:
     cmp.add_argument("--modes", nargs="+", default=["b0", "m0", "m1", "m2", "m3"])
     cmp.add_argument("--seed", type=int, default=0)
     cmp.add_argument("--out", help="also write the table to this markdown file")
+    chk = sub.add_parser("check", help="generate and score tests for changed functions")
+    chk.add_argument("--repo-dir", default=".")
+    chk.add_argument("--src", required=True, help="package folder relative to the repo")
+    chk.add_argument("--files", nargs="*", default=[], help="changed .py files (repo-relative)")
+    chk.add_argument("--base-ref", help="instead of --files: diff against this git ref")
+    chk.add_argument("--mode", choices=["b0", "m1", "m3"], default="b0")
+    chk.add_argument("--max-units", type=int, default=5)
+    chk.add_argument("--seed", type=int, default=0)
+    chk.add_argument("--summary", help="append the markdown summary to this file")
+    rep = sub.add_parser("repair", help="run the repair loop on an existing test file")
+    rep.add_argument("unit_id")
+    rep.add_argument("--tests", required=True)
+    rep.add_argument("--provider", choices=["groq", "gemini"], default="groq")
+    rpt = sub.add_parser("report", help="write the comparison table to results/comparison.md")
+    rpt.add_argument("--modes", nargs="+", default=["b0", "m0", "m1", "m2", "m3"])
+    rpt.add_argument("--seed", type=int, default=0)
     return parser
 
 
@@ -153,10 +169,57 @@ def cmd_compare(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_check(args: argparse.Namespace) -> int:
+    from testpilot.check import changed_python_files, check, summary_markdown
+    from testpilot.llm.budget import EXIT_BUDGET, BudgetExceeded
+
+    repo_dir = Path(args.repo_dir).resolve()
+    files = args.files or (changed_python_files(repo_dir, args.base_ref) if args.base_ref else [])
+    try:
+        rows = check(repo_dir, args.src, files, args.mode, args.max_units, args.seed)
+    except BudgetExceeded as exc:
+        print(exc)
+        return EXIT_BUDGET
+    text = summary_markdown(rows, args.mode)
+    print(text)
+    if args.summary:
+        with open(args.summary, "a", encoding="utf-8") as fh:
+            fh.write(text)
+    return 0
+
+
+def cmd_repair(args: argparse.Namespace) -> int:
+    from testpilot.context.builder import RepoIndex, build_context
+    from testpilot.llm.client import LLMClient
+    from testpilot.repair.loop import repair
+
+    unit, entry, repo_dir = load_unit(args.unit_id)
+    if unit is None or not repo_dir.is_dir():
+        print("unknown unit id, or repo not downloaded (python -m testpilot.ingest.build_dataset)")
+        return 2
+    ctx = build_context(unit, RepoIndex(repo_dir, entry["src"]))
+    code = Path(args.tests).read_text(encoding="utf-8")
+    out, _ = repair(LLMClient(provider=args.provider), ctx.render(), code, repo_dir, entry["src"])
+    print(out.test_code or "# no passing tests")
+    print(f"# kept={out.n_kept}/{out.n_written} rounds={out.rounds} tokens={out.tokens}")
+    return 0 if out.test_code else 1
+
+
+def cmd_report(args: argparse.Namespace) -> int:
+    args.out = str(config.ROOT / "results" / "comparison.md")
+    return cmd_compare(args)
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command == "ingest":
         return cmd_ingest(args)
+    if args.command == "check":
+        return cmd_check(args)
+    if args.command == "repair":
+        return cmd_repair(args)
+    if args.command == "report":
+        return cmd_report(args)
     if args.command == "compare":
         return cmd_compare(args)
     if args.command == "mutate":

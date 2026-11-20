@@ -30,3 +30,7 @@ build/
 .idea/
 .DS_Store
 Thumbs.db
+
+# run outputs
+work/
+work_*.log

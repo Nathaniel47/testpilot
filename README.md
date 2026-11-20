@@ -70,6 +70,10 @@ Rebuild: `python -m testpilot.ingest.build_dataset` (needs network and git; the 
 
 `python -m testpilot.cli ingest` summarises the sampled units; `ingest --context UNIT_ID` prints exactly what the LLM would see for one unit (source, docstring, enclosing class, helpers it calls, callers), capped at a token budget. Units that cannot be imported inside the sandbox are dropped.
 
+## Generating tests
+
+`python -m testpilot.cli generate UNIT_ID --mode b0|m0|m1` (b0 = offline template, m0 = one LLM call, m1 = plus up to 3 repair rounds). `python -m testpilot.generate.batch --mode b0 --split dev` runs a whole split and resumes if stopped. LLM modes need `TESTPILOT_GROQ_API_KEY` or `TESTPILOT_GEMINI_API_KEY`; answers are cached in `llm_cache/` and the daily token budget stops at 95% (exit code 75).
+
 ## Safety
 
 Generated tests and target code run only in a sandbox (separate process, time and memory limits, empty environment, temporary folder; Docker in CI). Only open-source code and no real personal data are used.

@@ -97,6 +97,12 @@ def build(split: str = "dev", seeds: list[int] | None = None, modes: list[str] |
             scores[m] = rows
     if not scores:
         return None
+    # Compare modes on the same units only: otherwise a mode scored on easier units looks better.
+    common = set.intersection(*(set(rows) for rows in scores.values()))
+    available = {m: len(rows) for m, rows in scores.items()}
+    scores = {m: {u: r for u, r in rows.items() if u in common} for m, rows in scores.items()}
+    if not common:
+        return None
     RESULTS.mkdir(exist_ok=True)
     charts.coverage_vs_mutation_bars(scores, RESULTS / "chart_coverage_vs_mutation.png")
     gap_mode = "m3" if "m3" in scores else next(iter(scores))
@@ -111,6 +117,10 @@ it, because the project's question is how far coverage overstates test quality.
 
 Modes with scored units here: {", ".join(NAMES[m] for m in scores)}.
 Modes without data are left out, not estimated.
+
+**Units compared: {len(common)}**, the ones scored in every listed mode (scored so far per mode:
+{", ".join(f"{m.upper()} {n}" for m, n in available.items())}). Modes are compared on identical
+units so an easier set of units cannot flatter one of them.
 
 ## Results
 
@@ -173,6 +183,11 @@ def limitations(scores: dict[str, dict]) -> str:
   reference suite is weak, and it is slow, so it is off unless `--flag-equivalent` is given. Check
   the counts section: if no mutants are flagged, scores are not corrected at all. The planned
   mutmut cross-check has not been run.
+- **Ceiling effect.** Functions are small and get only a handful of mutants each (see the counts
+  section), so per-function scores are coarse. If an LLM mode scores close to 1.0, the mutant set
+  is too easy to tell stronger modes apart, and differences between M1, M2 and M3 will be hidden.
+  A larger operator set (statement deletion, boundary and exception mutations) or more mutants
+  per function would be needed to separate them.
 - **Template baseline is generous to itself.** B0 drafts that fail are dropped before scoring, so
   its score reflects only tests that already pass. The baseline is weak by design, not a strong
   competitor.

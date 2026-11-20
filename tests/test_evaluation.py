@@ -86,3 +86,11 @@ def test_evaluate_stops_cleanly_when_budget_is_reached(monkeypatch):
 def test_score_dirs_are_per_mode_and_seed(work):
     assert score_dir("m1", 0) != score_dir("m1", 1) != score_dir("m2", 1)
     assert load_scores(score_dir("m1", 0)) == {}
+
+
+def test_modes_are_compared_on_the_same_units_only(work, units):
+    write_scores(work, "b0", 0, [fake_row(u, "toolz", 0.5, 0.1) for u in units])
+    write_scores(work, "m1", 0, [fake_row(u, "toolz", 1.0, 0.9) for u in units[:2]])
+    text = evaluation.build("dev", [0], ["b0", "m1"])
+    assert "Units compared: 2" in text and "B0 6, M1 2" in text
+    assert "| B0 | 2 |" in text and "| M1 | 2 |" in text

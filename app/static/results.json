@@ -1,0 +1,106 @@
+{
+ "generator": "offline template (B0)",
+ "examples": [
+  {
+   "name": "clamp (number limits)",
+   "code": "def clamp(value: int, low: int, high: int) -> int:\n    \"\"\"Limit value to the range [low, high].\n\n    >>> clamp(5, 0, 3)\n    3\n    >>> clamp(-2, 0, 3)\n    0\n    \"\"\"\n    if value < low:\n        return low\n    if value > high:\n        return high\n    return value\n",
+   "line_cov": 1.0,
+   "branch_cov": 1.0,
+   "mutation_score": 0.7142857142857143,
+   "n_mutants": 7,
+   "survivors": [
+    {
+     "line": 9,
+     "operator": "compare",
+     "detail": "< -> <="
+    },
+    {
+     "line": 11,
+     "operator": "compare",
+     "detail": "> -> >="
+    }
+   ],
+   "test_code": "import pytest\nimport demo_pkg.demo_mod as _mod\n\nglobals().update({k: v for k, v in vars(_mod).items() if not k.startswith('__')})\n\n\ndef test_clamp_docstring_examples():\n    assert repr(clamp(5, 0, 3)) == '3'\n    assert repr(clamp(-2, 0, 3)) == '0'\n\ndef test_clamp_smoke_0():\n    result = clamp(2, 2, 2)\n    assert isinstance(result, int)\n\n\ndef test_clamp_smoke_1():\n    result = clamp(0, 0, 0)\n    assert isinstance(result, int)\n\n\ndef test_clamp_smoke_2():\n    result = clamp(-3, -3, -3)\n    assert isinstance(result, int)\n\n",
+   "seconds": 43.8
+  },
+  {
+   "name": "is_leap_year (date rule)",
+   "code": "def is_leap_year(year: int) -> bool:\n    \"\"\"Gregorian leap year rule.\n\n    >>> is_leap_year(2024)\n    True\n    >>> is_leap_year(1900)\n    False\n    \"\"\"\n    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)\n",
+   "line_cov": 1.0,
+   "branch_cov": null,
+   "mutation_score": 0.8,
+   "n_mutants": 15,
+   "survivors": [
+    {
+     "line": 9,
+     "operator": "arith",
+     "detail": "% -> *"
+    },
+    {
+     "line": 9,
+     "operator": "constant",
+     "detail": "0 -> 1"
+    },
+    {
+     "line": 9,
+     "operator": "constant",
+     "detail": "400 -> 401"
+    }
+   ],
+   "test_code": "import pytest\nimport demo_pkg.demo_mod as _mod\n\nglobals().update({k: v for k, v in vars(_mod).items() if not k.startswith('__')})\n\n\ndef test_is_leap_year_docstring_examples():\n    assert repr(is_leap_year(2024)) == 'True'\n    assert repr(is_leap_year(1900)) == 'False'\n\ndef test_is_leap_year_smoke_0():\n    result = is_leap_year(2)\n    assert isinstance(result, bool)\n\n\ndef test_is_leap_year_smoke_1():\n    result = is_leap_year(0)\n    assert isinstance(result, bool)\n\n\ndef test_is_leap_year_smoke_2():\n    result = is_leap_year(-3)\n    assert isinstance(result, bool)\n\n",
+   "seconds": 59.5
+  },
+  {
+   "name": "fizzbuzz (strings)",
+   "code": "def fizzbuzz(n: int) -> str:\n    \"\"\"Classic FizzBuzz for one number.\n\n    >>> fizzbuzz(15)\n    'FizzBuzz'\n    >>> fizzbuzz(7)\n    '7'\n    \"\"\"\n    if n % 15 == 0:\n        return \"FizzBuzz\"\n    if n % 3 == 0:\n        return \"Fizz\"\n    if n % 5 == 0:\n        return \"Buzz\"\n    return str(n)\n",
+   "line_cov": 0.875,
+   "branch_cov": 0.8333333333333334,
+   "mutation_score": 0.6363636363636364,
+   "n_mutants": 22,
+   "survivors": [
+    {
+     "line": 14,
+     "operator": "return",
+     "detail": "return value -> None"
+    },
+    {
+     "line": 11,
+     "operator": "arith",
+     "detail": "% -> *"
+    },
+    {
+     "line": 12,
+     "operator": "constant",
+     "detail": "string -> changed string"
+    },
+    {
+     "line": 13,
+     "operator": "arith",
+     "detail": "% -> *"
+    },
+    {
+     "line": 13,
+     "operator": "constant",
+     "detail": "0 -> 1"
+    },
+    {
+     "line": 14,
+     "operator": "constant",
+     "detail": "string -> changed string"
+    },
+    {
+     "line": 11,
+     "operator": "constant",
+     "detail": "3 -> 4"
+    },
+    {
+     "line": 13,
+     "operator": "constant",
+     "detail": "5 -> 6"
+    }
+   ],
+   "test_code": "import pytest\nimport demo_pkg.demo_mod as _mod\n\nglobals().update({k: v for k, v in vars(_mod).items() if not k.startswith('__')})\n\n\ndef test_fizzbuzz_docstring_examples():\n    assert repr(fizzbuzz(15)) == \"'FizzBuzz'\"\n    assert repr(fizzbuzz(7)) == \"'7'\"\n\ndef test_fizzbuzz_smoke_0():\n    result = fizzbuzz(2)\n    assert isinstance(result, str)\n\n\ndef test_fizzbuzz_smoke_1():\n    result = fizzbuzz(0)\n    assert isinstance(result, str)\n\n\ndef test_fizzbuzz_smoke_2():\n    result = fizzbuzz(-3)\n    assert isinstance(result, str)\n\n",
+   "seconds": 83.8
+  }
+ ]
+}

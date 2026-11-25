@@ -94,7 +94,7 @@ It tests the functions changed in the PR and writes the mutation score to the jo
 
 ## Demo
 
-`python -m testpilot.demo.page` (offline, no key). Deployment steps for a free Hugging Face Space are in [DEPLOY.md](DEPLOY.md).
+A static page of saved results: https://huggingface.co/spaces/NathanielAAidoo/testpilot. To paste your own function, run `python -m testpilot.demo.page` locally (offline, no key). Deployment steps are in [DEPLOY.md](DEPLOY.md).
 
 ## Safety
 

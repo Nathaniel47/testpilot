@@ -1,6 +1,8 @@
+import json
+
 import pytest
 
-from app.build_space import build_space
+from app.build_static import RESULTS, build_space
 from testpilot.demo import page as gradio_app
 from testpilot.demo.core import EXAMPLES, MAX_CHARS, Refused, analyze, validate
 
@@ -65,17 +67,32 @@ def test_page_builds_and_exposes_no_public_api():
     assert all(fn.api_visibility == "private" for fn in demo.fns.values())
 
 
-def test_space_folder_is_three_files_pinned_to_one_commit(tmp_path):
+def test_static_space_is_two_files_pinned_to_one_commit(tmp_path):
     sha = "a" * 40
-    assert build_space(tmp_path / "space", commit=sha) == [
-        "README.md",
-        "app.py",
-        "requirements.txt",
-    ]
-    reqs = (tmp_path / "space" / "requirements.txt").read_text(encoding="utf-8")
-    assert f"/archive/{sha}.zip" in reqs and "coverage" in reqs
-    assert "sdk: gradio" in (tmp_path / "space" / "README.md").read_text(encoding="utf-8")
-    compile((tmp_path / "space" / "app.py").read_text(encoding="utf-8"), "app.py", "exec")
+    assert build_space(tmp_path / "space", commit=sha) == ["README.md", "index.html"]
+    html = (tmp_path / "space" / "index.html").read_text(encoding="utf-8")
+    assert f"@{sha}/app/static/page.js" in html
+    assert "sdk: static" in (tmp_path / "space" / "README.md").read_text(encoding="utf-8")
+
+
+def test_saved_results_match_the_current_examples():
+    saved = json.loads(RESULTS.read_text(encoding="utf-8"))["examples"]
+    assert [(r["name"], r["code"]) for r in saved] == list(EXAMPLES.items())
+    for row in saved:
+        assert "def test_" in row["test_code"] and 0 <= row["mutation_score"] <= 1
+
+
+def test_saved_scores_are_what_the_pipeline_produces_now():
+    saved = json.loads(RESULTS.read_text(encoding="utf-8"))["examples"][0]
+    live = analyze(saved["code"])
+    for key in ("line_cov", "mutation_score", "n_mutants", "survivors", "test_code"):
+        assert live[key] == saved[key]
+
+
+def test_page_never_treats_data_as_html():
+    script = (RESULTS.parent / "page.js").read_text(encoding="utf-8")
+    for risky in ("innerHTML", "outerHTML", "insertAdjacentHTML", "document.write", "eval("):
+        assert risky not in script
 
 
 def test_every_subpackage_is_part_of_the_install():

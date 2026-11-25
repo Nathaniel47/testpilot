@@ -1,12 +1,50 @@
 # Deploying the demo
 
-**Host: Hugging Face Spaces (Gradio SDK, free CPU Basic hardware).** Visitors need no account. The
-demo uses the offline generator, so it needs **no API key and no secrets**. Do not add any.
+**Host: a static Hugging Face Space.** Visitors need no account. The page shows results that the
+real pipeline saved for three examples. It runs no code, so it needs **no API key and no
+secrets**.
 
-A Docker Space was the first choice, but in November 2026 the New Space form showed Docker as
-**Paid** for this free account, so the demo uses Gradio.
+Why static (what the New Space form and ZeroGPU showed on a free account in November 2026):
 
-## Test it locally first
+- Docker was marked **Paid**.
+- Gradio ran only on **ZeroGPU**; free CPU Basic needed PRO.
+- ZeroGPU stopped this app at startup with "No @spaces.GPU function detected during startup",
+  because TestPilot uses no GPU. We did not work around that check.
+
+## How the page gets its content
+
+The Space holds `README.md` and `index.html`. `index.html` loads `app/static/page.js` from this
+public GitHub repository through jsDelivr, pinned to one commit, and the script loads
+`results.json` from the same place. The page changes only when `index.html` points to a new commit.
+It depends on GitHub and jsDelivr being available.
+
+## Update the demo
+
+1. If the examples or the pipeline changed, regenerate the saved results:
+
+```bash
+python -m app.build_static results
+```
+
+2. Run `pytest`, then commit and push.
+3. Write the Space files, pinned to the commit you just pushed (output in
+   `work/space_testpilot`):
+
+```bash
+python -m app.build_static space
+```
+
+4. In the Space's **Files** tab, edit `index.html` and `README.md` to match those two files. The
+   web editor needs only your normal sign-in. No access token is needed.
+
+## First-time setup
+
+Sign in at https://huggingface.co, then New Space: name `testpilot`, SDK **Static**, visibility
+Public. Then do the steps above.
+
+## Run the interactive version locally
+
+Pasting your own function works only on your machine:
 
 ```bash
 pip install -r requirements-demo.txt
@@ -16,45 +54,6 @@ pip install -r requirements-demo.txt
 python -m testpilot.demo.page
 ```
 
-## Publish (the login and any token are yours alone)
-
-1. Sign in at https://huggingface.co.
-2. New Space: name `testpilot`, SDK **Gradio**, template Blank, hardware **CPU Basic** (free),
-   visibility Public. Do not pick paid hardware, storage or dev mode.
-3. Build the upload folder (written to `work/space_testpilot`):
-
-```bash
-python -m app.build_space
-```
-
-4. Upload that folder's contents to the Space. With git (replace `YOUR_USER`; the password Git
-   asks for is an access token with write access, from Settings, Access Tokens; never commit it):
-
-```bash
-git clone https://huggingface.co/spaces/YOUR_USER/testpilot space_push
-```
-
-```bash
-cp -r work/space_testpilot/. space_push/
-```
-
-```bash
-cd space_push && git add . && git commit -m "TestPilot demo" && git push
-```
-
-5. Wait for the build, then run one example on the Space page. A sleeping Space takes a while to
-   wake, and a run takes roughly 10 to 60 seconds.
-
-## Limits built into the demo
-
-One function, at most 60 lines and 3,000 characters; only listed standard-library imports; one
-scoring job at a time with a queue of 10; 8 runs per browser session with a 20 second cooldown;
-no public API endpoint; time and memory limits per test run. The app does not save input.
-
-## What protects the host
-
-The input checks and the sandbox (separate process, empty environment, temporary folder, time and
-memory limits, soft network and write guards) stop accidents and casual misuse. They are **not** a
-security boundary against a determined attacker. The remaining protection is whatever isolation
-Hugging Face puts around a Space, which this project does not control and has not tested. That is
-why the Space must hold no secrets.
+It limits input (one function, at most 60 lines and 3,000 characters, listed standard-library
+imports only) and runs code with time and memory limits. These checks are **not** a security
+boundary, so do not expose it publicly without real isolation.

@@ -2,7 +2,7 @@
 
 Run locally:  python -m testpilot.demo.page
 Uses the offline template generator, so it needs no key. LLM tests are not offered here; the
-study results are in results/evaluation.md.
+study results are in results/dev/evaluation.md.
 """
 
 import time

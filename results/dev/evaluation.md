@@ -55,8 +55,8 @@ Not run yet: no mode has more than one seed scored. LLM modes need an API key; s
 ## How to reproduce
 
 ```
-python -m testpilot.evaluate --modes b0 m1 m2 m3 --split dev --seeds 0 1 2
-python -m testpilot.cli report
+python -m testpilot.evaluate --modes b0 m1 m2 m3 --split dev --seeds 0
+python -m testpilot.cli report --split dev --seeds 0
 ```
 
 See limitations.md for what these numbers do not show.

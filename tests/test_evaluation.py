@@ -44,7 +44,7 @@ def test_report_has_only_modes_with_data_and_writes_charts(work, units, tmp_path
     rows = [fake_row(u, "toolz" if i % 2 else "boltons", 0.9, 0.5) for i, u in enumerate(units)]
     write_scores(work, "b0", 0, rows)
     text = evaluation.build("dev", [0], ["b0", "m1", "m3"])
-    out = tmp_path / "results"
+    out = tmp_path / "results" / "dev"
     assert "B0" in text and "| M1 |" not in text and "| M3 |" not in text
     for name in ("evaluation.md", "limitations.md", "chart_gap_scatter.png"):
         assert (out / name).stat().st_size > 0
@@ -66,7 +66,7 @@ def test_report_returns_none_without_scores(work, units):
 def test_limitations_name_the_gaps_honestly(work, units):
     write_scores(work, "b0", 0, [fake_row(u, "toolz", 0.9, 0.5) for u in units])
     evaluation.build("dev", [0], ["b0"])
-    text = (evaluation.RESULTS / "limitations.md").read_text(encoding="utf-8")
+    text = (evaluation.RESULTS / "dev" / "limitations.md").read_text(encoding="utf-8")
     for phrase in ("Memorisation", "Equivalent mutants", "mutmut cross-check has not been run"):
         assert phrase in text
 
@@ -103,3 +103,45 @@ def test_seed_variance_uses_only_units_every_seed_scored(work, units):
     write_scores(work, "m1", 1, [fake_row(u, "toolz", 0.9, 0.5) for u in units[:2]])
     text = evaluation.build("dev", [0, 1], ["m1"])
     assert "seed 0: 0.500 (n=2)" in text and "seed 1: 0.500 (n=2)" in text
+
+
+def test_each_split_keeps_its_own_report(work, monkeypatch, tmp_path):
+    ids = [("d1", "dev"), ("t1", "test")]
+    data = {"units": [{"id": u, "split": s} for u, s in ids]}
+    real = evaluation.json.loads
+    monkeypatch.setattr(
+        evaluation.json, "loads", lambda s, *a, **k: data if '"units"' in s[:200] else real(s)
+    )
+    write_scores(work, "b0", 0, [fake_row(u, "toolz", 0.9, 0.5) for u, _ in ids])
+    evaluation.build("dev", [0], ["b0"])
+    evaluation.build("test", [0], ["b0"])
+    out = tmp_path / "results"
+    assert "(dev split)" in (out / "dev" / "evaluation.md").read_text(encoding="utf-8")
+    assert "(test split)" in (out / "test" / "evaluation.md").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("stop", [75, "crash"])
+def test_batch_records_the_run_even_when_it_stops_early(work, monkeypatch, stop):
+    from testpilot.generate import batch
+    from testpilot.llm import client as client_module
+
+    recorded = []
+
+    class FakeClient:
+        def __init__(self, **_):
+            self.stats = {"calls": 1, "cache_hits": 0, "tokens": 10}
+
+    def fake_units(*_):
+        if stop == "crash":
+            raise RuntimeError("429")
+        return stop
+
+    monkeypatch.setattr(client_module, "LLMClient", FakeClient)
+    monkeypatch.setattr(batch, "_run_units", fake_units)
+    monkeypatch.setattr(batch, "record_run", lambda c, label: recorded.append(label))
+    if stop == "crash":
+        with pytest.raises(RuntimeError):
+            batch.main(["--mode", "m1", "--split", "dev"])
+    else:
+        assert batch.main(["--mode", "m1", "--split", "dev"]) == 75
+    assert recorded == ["batch-m1-dev"]

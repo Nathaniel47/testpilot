@@ -1,4 +1,6 @@
-"""Build results/evaluation.md, results/limitations.md and the charts from saved scores.
+"""Build results/<split>/evaluation.md, limitations.md and the charts from saved scores.
+
+Each split has its own folder, so a test-split report never overwrites the dev-split one.
 
 Only modes that really have scored units appear. Nothing is filled in or estimated.
 """
@@ -108,11 +110,12 @@ def build(split: str = "dev", seeds: list[int] | None = None, modes: list[str] |
     scores = {m: {u: r for u, r in rows.items() if u in common} for m, rows in scores.items()}
     if not common:
         return None
-    RESULTS.mkdir(exist_ok=True)
-    charts.coverage_vs_mutation_bars(scores, RESULTS / "chart_coverage_vs_mutation.png")
+    folder = RESULTS / split
+    folder.mkdir(parents=True, exist_ok=True)
+    charts.coverage_vs_mutation_bars(scores, folder / "chart_coverage_vs_mutation.png")
     gap_mode = "m3" if "m3" in scores else next(iter(scores))
-    charts.gap_scatter(scores[gap_mode], gap_mode, RESULTS / "chart_gap_scatter.png")
-    charts.per_repo_dots(scores, RESULTS / "chart_per_repo.png")
+    charts.gap_scatter(scores[gap_mode], gap_mode, folder / "chart_gap_scatter.png")
+    charts.per_repo_dots(scores, folder / "chart_per_repo.png")
 
     text = f"""# Evaluation ({split} split)
 
@@ -149,14 +152,14 @@ units so an easier set of units cannot flatter one of them.
 ## How to reproduce
 
 ```
-python -m testpilot.evaluate --modes b0 m1 m2 m3 --split dev --seeds 0 1 2
-python -m testpilot.cli report
+python -m testpilot.evaluate --modes b0 m1 m2 m3 --split {split} --seeds {" ".join(map(str, seeds))}
+python -m testpilot.cli report --split {split} --seeds {" ".join(map(str, seeds))}
 ```
 
 See limitations.md for what these numbers do not show.
 """
-    (RESULTS / "evaluation.md").write_text(text, encoding="utf-8")
-    (RESULTS / "limitations.md").write_text(limitations(scores), encoding="utf-8")
+    (folder / "evaluation.md").write_text(text, encoding="utf-8")
+    (folder / "limitations.md").write_text(limitations(scores), encoding="utf-8")
     return text
 
 

@@ -47,7 +47,9 @@ def build_parser() -> argparse.ArgumentParser:
     rep.add_argument("unit_id")
     rep.add_argument("--tests", required=True)
     rep.add_argument("--provider", choices=["groq", "gemini"], default="groq")
-    rpt = sub.add_parser("report", help="write results/evaluation.md, limitations.md and charts")
+    rpt = sub.add_parser(
+        "report", help="write results/<split>/evaluation.md, limitations.md and charts"
+    )
     rpt.add_argument("--modes", nargs="+", default=["b0", "m0", "m1", "m2", "m3"])
     rpt.add_argument("--split", choices=["dev", "test", "all"], default="dev")
     rpt.add_argument("--seeds", nargs="+", type=int, default=[0])
@@ -213,7 +215,7 @@ def cmd_report(args: argparse.Namespace) -> int:
     if text is None:
         print("no scored units yet; run: python -m testpilot.evaluate --modes b0 --split dev")
         return 1
-    print("wrote results/evaluation.md, results/limitations.md and three charts")
+    print(f"wrote evaluation.md, limitations.md and three charts to results/{args.split}/")
     return 0
 
 

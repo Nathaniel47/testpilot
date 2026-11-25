@@ -12,6 +12,7 @@ from testpilot import config
 from testpilot.context.builder import RepoIndex, build_context
 from testpilot.generate import guided, modes
 from testpilot.llm.budget import EXIT_BUDGET, BudgetExceeded
+from testpilot.llm.meta import record_run
 from testpilot.subset import take_subset
 
 DATA = config.ROOT / "data"
@@ -39,6 +40,15 @@ def main(argv=None) -> int:
         from testpilot.llm.client import LLMClient
 
         client = LLMClient(provider=args.provider, seed=args.seed)
+    try:
+        return _run_units(args, units, repos, out_dir, client)
+    finally:
+        # Also on a budget stop or an API error: finished units came from this run.
+        if client and (client.stats["calls"] or client.stats["cache_hits"]):
+            record_run(client, f"batch-{args.mode}-{args.split}")
+
+
+def _run_units(args, units, repos, out_dir, client) -> int:
     indexes: dict[str, RepoIndex] = {}
     for unit in units:
         path = out_dir / (unit["sha256"] + ".json")

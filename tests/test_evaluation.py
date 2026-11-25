@@ -94,3 +94,12 @@ def test_modes_are_compared_on_the_same_units_only(work, units):
     text = evaluation.build("dev", [0], ["b0", "m1"])
     assert "Units compared: 2" in text and "B0 6, M1 2" in text
     assert "| B0 | 2 |" in text and "| M1 | 2 |" in text
+
+
+def test_seed_variance_uses_only_units_every_seed_scored(work, units):
+    # Seed 0 has an extra, much easier set of units that seed 1 never ran.
+    rows = [fake_row(u, "toolz", 0.9, 0.5 if i < 2 else 1.0) for i, u in enumerate(units)]
+    write_scores(work, "m1", 0, rows)
+    write_scores(work, "m1", 1, [fake_row(u, "toolz", 0.9, 0.5) for u in units[:2]])
+    text = evaluation.build("dev", [0, 1], ["m1"])
+    assert "seed 0: 0.500 (n=2)" in text and "seed 1: 0.500 (n=2)" in text

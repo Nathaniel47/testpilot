@@ -12,6 +12,7 @@ from testpilot import config
 from testpilot.context.builder import RepoIndex, build_context
 from testpilot.generate import guided, modes
 from testpilot.llm.budget import EXIT_BUDGET, BudgetExceeded
+from testpilot.subset import take_subset
 
 DATA = config.ROOT / "data"
 
@@ -29,8 +30,7 @@ def main(argv=None) -> int:
     repos = {r["name"]: r for r in json.loads((DATA / "repos.json").read_text("utf-8"))["repos"]}
     if args.split != "all":
         units = [u for u in units if u["split"] == args.split]
-    if args.limit:
-        units = units[: args.limit]
+    units = take_subset(units, args.limit)
 
     out_dir = config.work_dir() / "outcomes" / f"{args.mode}_s{args.seed}"
     out_dir.mkdir(parents=True, exist_ok=True)

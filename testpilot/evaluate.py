@@ -3,7 +3,8 @@
     python -m testpilot.evaluate --modes b0 m1 m2 m3 --split dev --seeds 0 1 2 --limit 30
 
 Finished units are skipped, so rerunning after the daily token budget stops it (exit code 75)
-carries on where it left off. Seeds above 0 are meant for a small subset (--limit).
+carries on where it left off. Seeds above 0 are meant for a small subset: --limit picks a seeded
+random one spread across libraries (testpilot/subset.py), the same for every mode and seed.
 """
 
 import argparse
@@ -18,7 +19,12 @@ def main(argv=None) -> int:
     ap.add_argument("--modes", nargs="+", default=["b0", "m1", "m2", "m3"])
     ap.add_argument("--split", choices=["dev", "test", "all"], default="dev")
     ap.add_argument("--seeds", nargs="+", type=int, default=[0])
-    ap.add_argument("--limit", type=int, default=0, help="only the first N units of the split")
+    ap.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="N units spread across libraries (seeded, same for every mode and seed)",
+    )
     ap.add_argument("--provider", default="groq")
     ap.add_argument("--skip-scoring", action="store_true")
     ap.add_argument("--flag-equivalent", action="store_true", help="slow; see score.batch")
@@ -43,7 +49,6 @@ def main(argv=None) -> int:
                 if args.flag_equivalent:
                     score.append("--flag-equivalent")
                 if args.limit:
-                    # The score batch counts only newly scored units, so this is a ceiling.
                     score += ["--limit", str(args.limit)]
                 score_batch.main(score)
     return 0

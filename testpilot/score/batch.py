@@ -7,6 +7,7 @@ import argparse
 import json
 
 from testpilot import config
+from testpilot.subset import take_subset
 
 DATA = config.ROOT / "data"
 
@@ -39,6 +40,7 @@ def main(argv=None) -> int:
     repos = {r["name"]: r for r in json.loads((DATA / "repos.json").read_text("utf-8"))["repos"]}
     if args.split != "all":
         units = [u for u in units if u["split"] == args.split]
+    units = take_subset(units, args.limit)  # the same units the generate batch chose
     src_dir, dst_dir = outcome_dir(args.mode, args.seed), score_dir(args.mode, args.seed)
     dst_dir.mkdir(parents=True, exist_ok=True)
     done = 0
@@ -46,8 +48,6 @@ def main(argv=None) -> int:
         source, target = src_dir / (unit["sha256"] + ".json"), dst_dir / (unit["sha256"] + ".json")
         if target.is_file() or not source.is_file():
             continue
-        if args.limit and done >= args.limit:
-            break
         outcome = json.loads(source.read_text(encoding="utf-8"))
         entry = repos[unit["repo"]]
         ref = DATA / "reference_tests" / entry["name"]

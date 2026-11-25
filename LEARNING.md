@@ -103,3 +103,12 @@ How to check: `pytest tests/test_evaluation.py`; run `python -m testpilot.evalua
 - **Supply chain.** The Space's `index.html` loads the script and results from this GitHub repository through jsDelivr, pinned to a full commit ID, so a later push cannot silently change the live page. It does rely on both services being up.
 
 How to check: `pytest tests/test_demo.py`; `python -m testpilot.demo.page` for the local interactive app. Deployment steps are in DEPLOY.md.
+
+## Step 6: choosing subsets fairly
+
+- **The problem.** `--limit N` used to take the first N units in the file. The file is grouped by library, so the first 30 test units came from only 2 of 12 libraries. Any conclusion from that subset would really have been about those two. This is sampling bias.
+- **The fix** (`testpilot/subset.py`). Each library's units are shuffled with a fixed seed, then the libraries are interleaved in proportion to their size. The first N of that order is a random sample spread across libraries. The 30-unit set sits inside the 120-unit set, and every mode and every LLM seed gets the same units. The subset seed is separate from the LLM seed, so changing the LLM seed does not change which functions are tested. Reading: any intro to stratified sampling.
+- **Seed variance on equal terms.** The variance table now uses only units that every listed seed scored. Before, seed 0 (the whole split) would have been compared with seeds 1 and 2 (a subset), and the difference in units would have looked like seed variance.
+- **Limit.** 30 units is still small, and a library with very few units may be missing from a 30-unit subset.
+
+How to check: `pytest tests/test_subset.py tests/test_evaluation.py`.

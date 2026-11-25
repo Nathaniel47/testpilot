@@ -30,14 +30,19 @@ def seed_table(modes: list[str], seeds: list[int], split: str, unit_split: dict)
     """Mean mutation score per seed for modes that have more than one seed scored."""
     lines = []
     for mode in modes:
-        per_seed = []
+        runs = {}
         for s in seeds:
             rows = split_filter(load_scores(score_dir(mode, s)), split, unit_split)
-            vals = [
-                r["mutation_score"] for r in rows.values() if r.get("mutation_score") is not None
-            ]
-            if vals:
-                per_seed.append((s, mean(vals), len(vals)))
+            scored = {u: r["mutation_score"] for u, r in rows.items()
+                      if r.get("mutation_score") is not None}  # fmt: skip
+            if scored:
+                runs[s] = scored
+        # Seeds are compared on the units they all scored; otherwise a different set of units
+        # would show up as if it were seed variance.
+        shared = set.intersection(*(set(v) for v in runs.values())) if runs else set()
+        per_seed = [
+            (s, mean([v[u] for u in shared]), len(shared)) for s, v in runs.items() if shared
+        ]
         if len(per_seed) > 1:
             means = [m for _, m, _ in per_seed]
             mu = sum(means) / len(means)

@@ -1,8 +1,8 @@
 import pytest
 
-from app import gradio_app
 from app.build_space import build_space
-from app.demo_core import EXAMPLES, MAX_CHARS, Refused, analyze, validate
+from testpilot.demo import page as gradio_app
+from testpilot.demo.core import EXAMPLES, MAX_CHARS, Refused, analyze, validate
 
 
 @pytest.mark.parametrize(
@@ -65,8 +65,21 @@ def test_page_builds_and_exposes_no_public_api():
     assert all(fn.api_visibility == "private" for fn in demo.fns.values())
 
 
-def test_space_folder_has_what_the_host_needs_and_nothing_secret(tmp_path):
-    files = build_space(tmp_path / "space")
-    assert {"README.md", "app.py", "requirements.txt", "app/gradio_app.py"} <= set(files)
-    assert not any(f.endswith((".env", ".pyc")) or "llm_cache" in f for f in files)
+def test_space_folder_is_three_files_pinned_to_one_commit(tmp_path):
+    sha = "a" * 40
+    assert build_space(tmp_path / "space", commit=sha) == [
+        "README.md",
+        "app.py",
+        "requirements.txt",
+    ]
+    reqs = (tmp_path / "space" / "requirements.txt").read_text(encoding="utf-8")
+    assert f"/archive/{sha}.zip" in reqs and "coverage" in reqs
     assert "sdk: gradio" in (tmp_path / "space" / "README.md").read_text(encoding="utf-8")
+    compile((tmp_path / "space" / "app.py").read_text(encoding="utf-8"), "app.py", "exec")
+
+
+def test_every_subpackage_is_part_of_the_install():
+    from setuptools import find_packages
+
+    found = set(find_packages(include=["testpilot*"]))
+    assert {"testpilot.demo", "testpilot.sandbox", "testpilot.mutation"} <= found

@@ -13,7 +13,7 @@ pip install -r requirements-demo.txt
 ```
 
 ```bash
-python -m app.gradio_app
+python -m testpilot.demo.page
 ```
 
 ## Publish (the login and any token are yours alone)

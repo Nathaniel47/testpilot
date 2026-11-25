@@ -1,4 +1,0 @@
-# Only what the offline demo needs. Gradio itself comes from sdk_version in README.md.
-pytest>=8.0
-coverage>=7.5
-psutil>=5.9

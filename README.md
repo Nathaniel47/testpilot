@@ -94,7 +94,7 @@ It tests the functions changed in the PR and writes the mutation score to the jo
 
 ## Demo
 
-`python -m app.gradio_app` (offline, no key). Deployment steps for a free Hugging Face Space are in [DEPLOY.md](DEPLOY.md).
+`python -m testpilot.demo.page` (offline, no key). Deployment steps for a free Hugging Face Space are in [DEPLOY.md](DEPLOY.md).
 
 ## Safety
 

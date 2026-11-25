@@ -1,6 +1,6 @@
 """TestPilot demo: paste or pick a Python function; see tests, coverage and mutation score.
 
-Run locally:  python -m app.gradio_app
+Run locally:  python -m testpilot.demo.page
 Uses the offline template generator, so it needs no key. LLM tests are not offered here; the
 study results are in results/evaluation.md.
 """
@@ -9,7 +9,7 @@ import time
 
 import gradio as gr
 
-from app.demo_core import EXAMPLES, Refused, analyze
+from testpilot.demo.core import EXAMPLES, Refused, analyze
 
 MAX_RUNS_PER_SESSION = 8
 COOLDOWN_SECONDS = 20

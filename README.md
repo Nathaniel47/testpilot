@@ -94,7 +94,7 @@ It tests the functions changed in the PR and writes the mutation score to the jo
 
 ## Demo
 
-`streamlit run app/streamlit_app.py` (offline, no key). Deployment steps for a free Hugging Face Space are in [DEPLOY.md](DEPLOY.md).
+`python -m app.gradio_app` (offline, no key). Deployment steps for a free Hugging Face Space are in [DEPLOY.md](DEPLOY.md).
 
 ## Safety
 

@@ -1,5 +1,7 @@
 import pytest
 
+from app import gradio_app
+from app.build_space import build_space
 from app.demo_core import EXAMPLES, MAX_CHARS, Refused, analyze, validate
 
 
@@ -39,14 +41,32 @@ def test_analyze_scores_an_example_end_to_end():
     assert row["seconds"] > 0
 
 
-def test_page_runs_an_example_with_one_click():
-    from streamlit.testing.v1 import AppTest
+def test_one_click_run_returns_scores_and_tests():
+    report, tests, session = gradio_app.run(EXAMPLES["clamp (number limits)"], None)
+    assert "Mutation score" in report and "def test_" in tests and session["runs"] == 1
 
-    at = AppTest.from_file("../app/streamlit_app.py", default_timeout=180).run()
-    assert not at.exception
-    at.selectbox[0].select("clamp (number limits)").run()
-    at.button[0].click().run()
-    assert not at.exception and not at.error
-    labels = [m.label for m in at.metric]
-    assert "Mutation score" in labels and "Line coverage" in labels
-    assert any("def test_" in c.value for c in at.code)
+
+def test_cooldown_and_session_cap_block_without_running_anything(monkeypatch):
+    monkeypatch.setattr(gradio_app, "analyze", lambda code: pytest.fail("must not run"))
+    soon, tests, _ = gradio_app.run("x", {"runs": 1, "last": 100.0}, now=lambda: 105.0)
+    assert "Please wait 15s" in soon and tests == ""
+    capped = {"runs": gradio_app.MAX_RUNS_PER_SESSION, "last": 0.0}
+    assert "limit reached" in gradio_app.run("x", capped)[0]
+
+
+def test_refused_input_is_explained_on_the_page():
+    code = chr(10).join(["import os", "", "def f():", "    return os.sep"])
+    report, tests, _ = gradio_app.run(code, None)
+    assert "Cannot analyse" in report and tests == ""
+
+
+def test_page_builds_and_exposes_no_public_api():
+    demo = gradio_app.build()
+    assert all(fn.api_visibility == "private" for fn in demo.fns.values())
+
+
+def test_space_folder_has_what_the_host_needs_and_nothing_secret(tmp_path):
+    files = build_space(tmp_path / "space")
+    assert {"README.md", "app.py", "requirements.txt", "app/gradio_app.py"} <= set(files)
+    assert not any(f.endswith((".env", ".pyc")) or "llm_cache" in f for f in files)
+    assert "sdk: gradio" in (tmp_path / "space" / "README.md").read_text(encoding="utf-8")

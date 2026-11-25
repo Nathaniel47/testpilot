@@ -1,3 +1,4 @@
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -61,6 +62,7 @@ def test_empty_summary_is_polite():
     assert "No eligible" in summary_markdown([], "b0")
 
 
+@pytest.mark.skipif(shutil.which("git") is None, reason="git is not installed")
 def test_changed_files_come_from_git_diff(repo):
     def git(*a):
         subprocess.run(["git", *a], cwd=repo, check=True, capture_output=True)

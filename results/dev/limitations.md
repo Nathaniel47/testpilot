@@ -1,13 +1,22 @@
 # Limitations
 
-**Modes without results yet:** M0 single LLM call; M2 coverage-guided (the coverage-only comparison); M3 mutation-guided. Any claim about them would be a guess.
-
 ## Where the results are weak
 
-- **Small sample, wide intervals.** The full set is 228 functions from 12 libraries (68 dev, 160
-  test), fewer than the 300 first planned. Bootstrap intervals over about 70 units are wide, so
-  small differences between modes are not evidence. Results use the dev split unless stated;
-  prompts were tuned on dev only, and the test split should be run once at the end.
+- **M3 is scored on its own feedback.** Mutation-guided generation and scoring
+  use the same mutant sample. M3's mutation score (and so its smaller coverage gap) shows that it
+  can write tests for survivors it is told about, not that those tests catch more unseen bugs. A
+  fair comparison needs bugs M3 never saw: held-out mutants or an independent tool such as mutmut.
+  Neither has been run. M2 has the same bias on line and branch coverage, the signal it is guided
+  by.
+- **Small sample, wide intervals.** The full set is 228 functions from 12 libraries
+  (68 dev, 160 test), fewer than the 300 first planned. Bootstrap intervals over about 70 units
+  are wide, so small differences between modes are not evidence. Results use the dev split unless
+  stated; prompts were tuned on dev only, and the test split should be run once at the end.
+- **Scores can move with machine load.** A mutant run that times out or fails for any reason
+  counts as caught, and the scorer does not record which of these happened. On a busy laptop a
+  harmless slowdown can therefore raise a score; a test of the demo example once scored one extra
+  mutant as caught and matched again on reruns (load is the likely cause, not a proven one). Where
+  M1, M2 and M3 end with identical tests, compare their per-unit scores to check a given run.
 - **Memorisation.** The libraries are popular and public, so the model may have seen their code
   and tests in training. Moving the repo's own tests out of the working copy stops copying from
   the prompt, not from memory. Scores may be inflated for the best-known libraries.

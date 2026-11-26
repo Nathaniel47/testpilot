@@ -120,3 +120,13 @@ How to check: `pytest tests/test_subset.py tests/test_evaluation.py`.
 - **How it was found.** The new LLM calls did not add up: more calls were made than the extra guided rounds explain. Lesson: check that a cache you rely on was actually hit. Reading: any text on controlled experiments and confounding variables.
 
 How to check: `pytest tests/test_shared_base.py`.
+
+## Step 6: dev results, and why M3's lead does not count yet
+
+- **Numbers (68 dev functions, one seed).** Mutation score: template baseline 0.27, single call 0.79, with repair (M1) 0.91, coverage-guided (M2) 0.91, mutation-guided (M3) 0.93. The big gains come from using an LLM at all and then from repair. The guided rounds change little, partly because 41 of 68 functions already score 1.0 after M1, so there is no room to improve.
+- **The catch with M3.** M3 is told which mutants survived, keeps a new test file only if it kills more of them, and is then graded on the same mutants. That is like marking a student on the questions they were given to practise on. M3 cannot score below M1 by design, so its 0.02 lead over M2 does not show that it writes better tests. A confidence interval does not help: it measures noise, not bias.
+- **What would be fair.** Grade on bugs M3 never saw. One way is to split each function's mutants into a set M3 may see and a set used only for grading; many functions have few mutants (median 9), so that split would be coarse. Another is to grade with an independent tool such as mutmut. Neither has been run.
+- **Timing noise check.** A mutant that runs too long counts as caught, so a busy laptop could change scores. M2 and M3 often end with exactly M1's tests, and each mode is scored separately. All those repeat scorings matched exactly, so no noise showed up in this run.
+- **Chart fixes.** The per-function chart now shows M1, whose tests never saw a mutant. In the library chart, equal scores used to hide one another, so each mode now has its own height.
+- **Why it matters.** When a method is graded with the same signal it optimises, the result looks like a win whether or not it is one. Reading: Goodhart's law, and train/test splits.
+- **But load noise is possible.** Later, one run of the demo test under load scored 6 of 7 mutants as caught instead of the saved 5. Three reruns at lower load gave 5 every time. The likely cause is that a slow or failed run counts as a catch; the scorer does not record why a run failed, so this is not proven. Recording timeouts separately, and retrying them once, would settle it.

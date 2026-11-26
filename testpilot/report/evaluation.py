@@ -92,6 +92,23 @@ def facts(scores: dict[str, dict]) -> str:
     return "\n".join(out)
 
 
+M3_WARNING = """
+**Do not read M3's mutation score as a fair win.** M3 is shown the mutants that survived, keeps a
+new test file only if its score on them rises, and is then scored on those same mutants. Its score
+therefore cannot fall below that of the M1 tests it started from, and any lead over M1 or M2 is
+biased in its favour, whatever the interval says. M3 also asked for more guided rounds where its
+signal had more left to improve, so compare its tokens per unit too.
+"""
+
+M3_LIMITATION = """- **M3 is scored on its own feedback.** Mutation-guided generation and scoring
+  use the same mutant sample. M3's mutation score (and so its smaller coverage gap) shows that it
+  can write tests for survivors it is told about, not that those tests catch more unseen bugs. A
+  fair comparison needs bugs M3 never saw: held-out mutants or an independent tool such as mutmut.
+  Neither has been run. M2 has the same bias on line and branch coverage, the signal it is guided
+  by.
+"""
+
+
 def build(split: str = "dev", seeds: list[int] | None = None, modes: list[str] | None = None):
     seeds = seeds or [0]
     modes = modes or ALL_MODES
@@ -113,7 +130,8 @@ def build(split: str = "dev", seeds: list[int] | None = None, modes: list[str] |
     folder = RESULTS / split
     folder.mkdir(parents=True, exist_ok=True)
     charts.coverage_vs_mutation_bars(scores, folder / "chart_coverage_vs_mutation.png")
-    gap_mode = "m3" if "m3" in scores else next(iter(scores))
+    # M1 first: its tests never saw a mutant, so its gap is not shrunk by guidance.
+    gap_mode = "m1" if "m1" in scores else next(iter(scores))
     charts.gap_scatter(scores[gap_mode], gap_mode, folder / "chart_gap_scatter.png")
     charts.per_repo_dots(scores, folder / "chart_per_repo.png")
 
@@ -132,7 +150,7 @@ units so an easier set of units cannot flatter one of them.
 
 ## Results
 
-{comparison_markdown(scores, seeds[0])}
+{comparison_markdown(scores, seeds[0])}{M3_WARNING if "m3" in scores else ""}
 ![coverage vs mutation score](chart_coverage_vs_mutation.png)
 
 ![per-unit gap](chart_gap_scatter.png)
@@ -174,12 +192,17 @@ def limitations(scores: dict[str, dict]) -> str:
     return (
         "# Limitations\n\n"
         + gaps
-        + """## Where the results are weak
-
-- **Small sample, wide intervals.** The full set is 228 functions from 12 libraries (68 dev, 160
-  test), fewer than the 300 first planned. Bootstrap intervals over about 70 units are wide, so
-  small differences between modes are not evidence. Results use the dev split unless stated;
-  prompts were tuned on dev only, and the test split should be run once at the end.
+        + "## Where the results are weak\n\n"
+        + (M3_LIMITATION if "m3" in scores else "")
+        + """- **Small sample, wide intervals.** The full set is 228 functions from 12 libraries
+  (68 dev, 160 test), fewer than the 300 first planned. Bootstrap intervals over about 70 units
+  are wide, so small differences between modes are not evidence. Results use the dev split unless
+  stated; prompts were tuned on dev only, and the test split should be run once at the end.
+- **Scores can move with machine load.** A mutant run that times out or fails for any reason
+  counts as caught, and the scorer does not record which of these happened. On a busy laptop a
+  harmless slowdown can therefore raise a score; a test of the demo example once scored one extra
+  mutant as caught and matched again on reruns (load is the likely cause, not a proven one). Where
+  M1, M2 and M3 end with identical tests, compare their per-unit scores to check a given run.
 - **Memorisation.** The libraries are popular and public, so the model may have seen their code
   and tests in training. Moving the repo's own tests out of the working copy stops copying from
   the prompt, not from memory. Scores may be inflated for the best-known libraries.

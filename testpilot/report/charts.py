@@ -71,7 +71,8 @@ def per_repo_dots(scores: dict[str, dict], path: Path) -> None:
     """Chart 3: mean mutation score per library and mode, to show where results are weak."""
     repos = sorted({r.get("repo", "?") for rows in scores.values() for r in rows.values()})
     palette = ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#E69F00", "#56B4E9"]
-    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig, ax = plt.subplots(figsize=(7.5, 6))
+    step = 0.7 / max(len(scores), 1)
     for i, (mode, rows) in enumerate(scores.items()):
         xs, ys = [], []
         for j, repo in enumerate(repos):
@@ -79,13 +80,16 @@ def per_repo_dots(scores: dict[str, dict], path: Path) -> None:
                  if r.get("repo") == repo and r.get("mutation_score") is not None]  # fmt: skip
             if v:
                 xs.append(mean(v))
-                ys.append(j)
-        ax.scatter(xs, ys, color=palette[i % len(palette)], label=mode.upper(), s=40)
+                # Offset each mode, or equal scores hide one another.
+                ys.append(j + (i - (len(scores) - 1) / 2) * step)
+        ax.scatter(xs, ys, color=palette[i % len(palette)], label=mode.upper(), s=22)
     ax.set_yticks(range(len(repos)), repos)
-    ax.set_xlim(0, 1.02)
+    for j in range(len(repos) - 1):
+        ax.axhline(j + 0.5, color=LINE, lw=0.5, alpha=0.3)
+    ax.set_xlim(-0.02, 1.02)
     ax.set_xlabel("Mean mutation score")
     ax.set_title("Mutation score by library")
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, loc="center left", bbox_to_anchor=(1.01, 0.5))
     ax.spines[["top", "right"]].set_visible(False)
     fig.tight_layout()
     fig.savefig(path, dpi=150)

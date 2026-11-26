@@ -71,6 +71,16 @@ def test_limitations_name_the_gaps_honestly(work, units):
         assert phrase in text
 
 
+@pytest.mark.parametrize("mode", ["m1", "m3"])
+def test_report_warns_that_m3_is_scored_on_its_own_feedback(work, units, mode):
+    write_scores(work, mode, 0, [fake_row(u, "toolz", 0.9, 0.5) for u in units])
+    text = evaluation.build("dev", [0], [mode])
+    limits = (evaluation.RESULTS / "dev" / "limitations.md").read_text(encoding="utf-8")
+    assert ("fair win" in text) == (mode == "m3")
+    assert ("scored on its own feedback" in limits) == (mode == "m3")
+    assert "Small sample" in limits
+
+
 def test_evaluate_stops_cleanly_when_budget_is_reached(monkeypatch):
     calls = []
 

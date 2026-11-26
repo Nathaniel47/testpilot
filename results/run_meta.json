@@ -68,5 +68,33 @@
    "cache_hits": 105,
    "tokens": 129310
   }
+ },
+ {
+  "label": "batch-m2-dev",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "seed": 0,
+  "git_commit": "31be704ddac2cc907d87e680c90b452549c11dd8",
+  "time_utc": "2026-11-26T08:12:18+00:00",
+  "stats": {
+   "calls": 0,
+   "cache_hits": 11,
+   "tokens": 0
+  }
+ },
+ {
+  "label": "batch-m3-dev",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "seed": 0,
+  "git_commit": "31be704ddac2cc907d87e680c90b452549c11dd8",
+  "time_utc": "2026-11-26T09:39:23+00:00",
+  "stats": {
+   "calls": 7,
+   "cache_hits": 38,
+   "tokens": 19230
+  }
  }
 ]

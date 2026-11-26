@@ -61,10 +61,7 @@ def seed_table(
             cells = ", ".join(f"seed {s}: {m:.3f} (n={n})" for s, m, n in per_seed)
             lines.append(f"| {mode.upper()} | {cells} | {mu:.3f} | {sd:.3f} |")
     if not lines:
-        return (
-            "Not run yet: no mode has more than one seed scored. LLM modes need an API key; "
-            "see the run commands below.\n"
-        )
+        return "Not run yet: no mode has more than one seed scored.\n"
     return (
         "| Mode | Score per seed | Mean | Std dev over seeds |\n|---|---|---|---|\n"
         + "\n".join(lines)
@@ -106,6 +103,19 @@ def facts(scores: dict[str, dict]) -> str:
                 f"{sum(r.get('n_memory_kills', 0) for r in rs)} by the memory limit."
             )
     return "\n".join(out)
+
+
+def headroom(scores: dict[str, dict]) -> str:
+    """How many units a guided mode could still improve after M1."""
+    values = [r.get("unseen_score") for r in scores.get("m1", {}).values()]
+    values = [v for v in values if v is not None]
+    if not values:
+        return ""
+    full = sum(v == 1 for v in values)
+    return (
+        f"\n**Room to improve:** M1 already catches every unseen bug on {full} of {len(values)} "
+        f"units, so only {len(values) - full} could score higher with guidance.\n"
+    )
 
 
 HOLDOUT_NOTE = """
@@ -153,6 +163,9 @@ def build(split: str = "dev", seeds: list[int] | None = None, modes: list[str] |
     charts.gap_scatter(scores[gap_mode], gap_mode, folder / "chart_gap_scatter.png")
     charts.per_repo_dots(scores, folder / "chart_per_repo.png", key)
 
+    note = HOLDOUT_NOTE if key == "unseen_score" else ""
+    mode_list, seed_list = " ".join(scores), " ".join(map(str, seeds))
+
     text = f"""# Evaluation ({split} split)
 
 Scoring is fully automatic (tests run in the sandbox; no LLM judge). Primary metric: **mutation
@@ -169,7 +182,7 @@ units so an easier set of units cannot flatter one of them.
 
 ## Results
 
-{comparison_markdown(scores, seeds[0])}{HOLDOUT_NOTE if key == "unseen_score" else ""}
+{comparison_markdown(scores, seeds[0])}{headroom(scores)}{note}
 ![coverage vs mutation score](chart_coverage_vs_mutation.png)
 
 ![per-unit gap](chart_gap_scatter.png)
@@ -189,8 +202,8 @@ units so an easier set of units cannot flatter one of them.
 ## How to reproduce
 
 ```
-python -m testpilot.evaluate --modes b0 m1 m2 m3 --split {split} --seeds {" ".join(map(str, seeds))}
-python -m testpilot.cli report --split {split} --seeds {" ".join(map(str, seeds))}
+python -m testpilot.evaluate --modes {mode_list} --split {split} --seeds {seed_list}
+python -m testpilot.cli report --split {split} --modes {mode_list} --seeds {seed_list}
 ```
 
 See limitations.md for what these numbers do not show.
@@ -217,11 +230,11 @@ def limitations(scores: dict[str, dict]) -> str:
   (68 dev, 160 test), fewer than the 300 first planned. Bootstrap intervals over about 70 units
   are wide, so small differences between modes are not evidence. Results use the dev split unless
   stated; prompts were tuned on dev only, and the test split should be run once at the end.
-- **Scores can move with machine load.** A mutant run that times out or fails for any reason
-  counts as caught, and the scorer does not record which of these happened. On a busy laptop a
-  harmless slowdown can therefore raise a score; a test of the demo example once scored one extra
-  mutant as caught and matched again on reruns (load is the likely cause, not a proven one). Where
-  M1, M2 and M3 end with identical tests, compare their per-unit scores to check a given run.
+- **Scores can move with machine load.** A mutant run that times out is retried once with three
+  times the limit; if it times out again it counts as caught, and so does hitting the memory
+  limit (see the counts section for how often). Before the retry was added, rescoring the same
+  template-baseline tests changed the score of a few units, so a busy machine can still matter.
+  Where two modes end with identical tests, compare their per-unit scores to check a given run.
 - **Memorisation.** The libraries are popular and public, so the model may have seen their code
   and tests in training. Moving the repo's own tests out of the working copy stops copying from
   the prompt, not from memory. Scores may be inflated for the best-known libraries.
@@ -245,8 +258,8 @@ def limitations(scores: dict[str, dict]) -> str:
   planned for the main runs. The Gemini confirmation run has not been done, and its model ID is
   unverified. Free-tier token limits (about 200K a day) cap how many units and seeds can run.
 - **Seeds.** Variance over seeds is only measured where several seeds were actually run (a small
-  subset). With temperature 0 and cached calls, a "seed" mostly changes sampling of mutants, so
-  seed variance understates real model variance.
+  subset). A seed changes only the model's sampling seed; mutant samples and the shown/unseen
+  split stay fixed. At temperature 0 this probably understates how much results could vary.
 - **Missing comparisons.** B1 (the library's own human tests, scored per function) and B2
   (Pynguin) are not yet scored, so there is no human-test yardstick in the table.
 - **Sandbox.** Process limits and soft guards stop accidents, not a determined attacker; Docker in

@@ -4,7 +4,7 @@ import pytest
 
 from testpilot import evaluate
 from testpilot.report import evaluation
-from testpilot.report.tables import load_scores
+from testpilot.report.tables import load_scores, paired_difference
 from testpilot.score.batch import score_dir
 
 
@@ -77,10 +77,15 @@ def test_report_ranks_modes_on_unseen_bugs(work, units):
         write_scores(work, mode, 0, rows)
     text = evaluation.build("dev", [0], ["m2", "m3"])
     assert "Compare modes on the unseen-bug score" in text
-    assert "M3 minus M2" in text and "unseen-bug score 0.50" in text
+    assert "M3 minus M2" in text and "unseen-bug score +0.500" in text
     assert "## By library (mean unseen-bug score)" in text and "0.75 (n=6)" in text
     limits = (evaluation.RESULTS / "dev" / "limitations.md").read_text(encoding="utf-8")
     assert "Unseen bugs are not unrelated bugs" in limits and "Small sample" in limits
+
+
+def test_a_difference_of_zero_everywhere_has_no_interval():
+    same = {u: {"unseen_score": 0.5} for u in "abc"}
+    assert paired_difference(same, same, "unseen_score") == "no difference on any of 3 units"
 
 
 def test_old_scores_without_unseen_bugs_are_not_presented_as_unseen(work, units):

@@ -134,4 +134,4 @@ def test_comparison_table_has_every_mode_and_a_paired_difference():
     text = comparison_markdown(scores)
     assert "| M2 |" in text and "| M3 |" in text and "M3 minus M2" in text
     assert mode_summary(list(scores["m2"].values()))["gap"].startswith("+")
-    assert paired_difference(scores["m2"], scores["m3"], "mutation_score").startswith("0.")
+    assert paired_difference(scores["m2"], scores["m3"], "mutation_score").startswith("+0.")

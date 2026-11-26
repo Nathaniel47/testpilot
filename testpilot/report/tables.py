@@ -57,7 +57,17 @@ def paired_difference(a: dict, b: dict, key: str, seed: int = 0) -> str:
         for u in a.keys() & b.keys()
         if a[u].get(key) is not None and b[u].get(key) is not None
     ]
-    return f"{_fmt(diffs, seed)} (n={len(diffs)})" if diffs else "n/a"
+    if not diffs:
+        return "n/a"
+    if not any(diffs):
+        # A bootstrap of all zeros gives [0, 0], which would read as certainty.
+        return f"no difference on any of {len(diffs)} units"
+    low, high = bootstrap_ci(diffs, seed) or (diffs[0], diffs[0])
+    up, down = sum(d > 0 for d in diffs), sum(d < 0 for d in diffs)
+    return (
+        f"{mean(diffs):+.3f} [{low:+.3f}, {high:+.3f}] "
+        f"(higher on {up}, lower on {down}, n={len(diffs)})"
+    )
 
 
 def comparison_markdown(scores: dict[str, dict[str, dict]], seed: int = 0) -> str:

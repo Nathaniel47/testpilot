@@ -2,21 +2,22 @@
 
 ## Where the results are weak
 
-- **M3 is scored on its own feedback.** Mutation-guided generation and scoring
-  use the same mutant sample. M3's mutation score (and so its smaller coverage gap) shows that it
-  can write tests for survivors it is told about, not that those tests catch more unseen bugs. A
-  fair comparison needs bugs M3 never saw: held-out mutants or an independent tool such as mutmut.
-  Neither has been run. M2 has the same bias on line and branch coverage, the signal it is guided
-  by.
+- **Unseen bugs are not unrelated bugs.** The held-out mutants come from the same
+  engine and often the same line as mutants M3 was shown, so a test written for a shown bug can
+  catch a neighbouring held-out one. That is a milder advantage than grading on the shown bugs,
+  but the score does not prove M3 finds unrelated kinds of bug; an independent tool such as mutmut
+  would test that and has not been run. Each half is small, so per-function unseen scores are
+  coarse. The all-bug score is biased towards M3, and M2 has the same bias on line and branch
+  coverage, the signal it is guided by.
 - **Small sample, wide intervals.** The full set is 228 functions from 12 libraries
   (68 dev, 160 test), fewer than the 300 first planned. Bootstrap intervals over about 70 units
   are wide, so small differences between modes are not evidence. Results use the dev split unless
   stated; prompts were tuned on dev only, and the test split should be run once at the end.
-- **Scores can move with machine load.** A mutant run that times out or fails for any reason
-  counts as caught, and the scorer does not record which of these happened. On a busy laptop a
-  harmless slowdown can therefore raise a score; a test of the demo example once scored one extra
-  mutant as caught and matched again on reruns (load is the likely cause, not a proven one). Where
-  M1, M2 and M3 end with identical tests, compare their per-unit scores to check a given run.
+- **Scores can move with machine load.** A mutant run that times out is retried once with three
+  times the limit; if it times out again it counts as caught, and so does hitting the memory
+  limit (see the counts section for how often). Before the retry was added, rescoring the same
+  template-baseline tests changed the score of a few units, so a busy machine can still matter.
+  Where two modes end with identical tests, compare their per-unit scores to check a given run.
 - **Memorisation.** The libraries are popular and public, so the model may have seen their code
   and tests in training. Moving the repo's own tests out of the working copy stops copying from
   the prompt, not from memory. Scores may be inflated for the best-known libraries.
@@ -40,8 +41,8 @@
   planned for the main runs. The Gemini confirmation run has not been done, and its model ID is
   unverified. Free-tier token limits (about 200K a day) cap how many units and seeds can run.
 - **Seeds.** Variance over seeds is only measured where several seeds were actually run (a small
-  subset). With temperature 0 and cached calls, a "seed" mostly changes sampling of mutants, so
-  seed variance understates real model variance.
+  subset). A seed changes only the model's sampling seed; mutant samples and the shown/unseen
+  split stay fixed. At temperature 0 this probably understates how much results could vary.
 - **Missing comparisons.** B1 (the library's own human tests, scored per function) and B2
   (Pynguin) are not yet scored, so there is no human-test yardstick in the table.
 - **Sandbox.** Process limits and soft guards stop accidents, not a determined attacker; Docker in

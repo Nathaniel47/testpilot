@@ -5,7 +5,7 @@ python -m testpilot.generate.batch --mode b0 --split dev
 
 import argparse
 import json
-from dataclasses import asdict
+from dataclasses import asdict, fields
 from pathlib import Path
 
 from testpilot import config
@@ -13,6 +13,7 @@ from testpilot.context.builder import RepoIndex, build_context
 from testpilot.generate import guided, modes
 from testpilot.llm.budget import EXIT_BUDGET, BudgetExceeded
 from testpilot.llm.meta import record_run
+from testpilot.repair.loop import Outcome
 from testpilot.subset import take_subset
 
 DATA = config.ROOT / "data"
@@ -63,7 +64,8 @@ def _run_units(args, units, repos, out_dir, client) -> int:
                 out = modes.run_b0(ctx, repo_dir, entry["src"])
             elif args.mode in ("m2", "m3"):
                 run = guided.run_m2 if args.mode == "m2" else guided.run_m3
-                out = run(client, ctx, repo_dir, entry["src"], unit)
+                base = m1_base(client, ctx, repo_dir, entry["src"], unit, args.seed)
+                out = run(client, ctx, repo_dir, entry["src"], unit, base)
             else:
                 run = modes.run_m0 if args.mode == "m0" else modes.run_m1
                 out = run(client, ctx, repo_dir, entry["src"])
@@ -74,6 +76,24 @@ def _run_units(args, units, repos, out_dir, client) -> int:
         path.write_text(json.dumps(record), encoding="utf-8")
     summarise(out_dir, units)
     return 0
+
+
+def m1_base(client, ctx, repo_dir, src, unit: dict, seed: int) -> Outcome:
+    """The saved M1 outcome of this unit and seed; made and saved first if there is none.
+
+    M1 is not re-run for M2 and M3: a replay can differ, and then the modes being compared
+    would not start from the same tests.
+    """
+    folder = config.work_dir() / "outcomes" / f"m1_s{seed}"
+    path = folder / (unit["sha256"] + ".json")
+    if path.is_file():
+        saved = json.loads(path.read_text(encoding="utf-8"))
+        return Outcome(**{f.name: saved[f.name] for f in fields(Outcome)})
+    out = modes.run_m1(client, ctx, repo_dir, src)
+    folder.mkdir(parents=True, exist_ok=True)
+    record = {"unit_id": unit["id"], "split": unit["split"], **asdict(out)}
+    path.write_text(json.dumps(record), encoding="utf-8")
+    return out
 
 
 def summarise(out_dir: Path, units: list[dict]) -> None:

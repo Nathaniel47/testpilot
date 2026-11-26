@@ -12,5 +12,61 @@
    "cache_hits": 0,
    "tokens": 3114
   }
+ },
+ {
+  "label": "batch-m1-dev",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "seed": 0,
+  "git_commit": "ba4bfba15d059fff303e04fac27c4318193d918a",
+  "time_utc": "2026-11-25T18:38:50+00:00",
+  "stats": {
+   "calls": 11,
+   "cache_hits": 0,
+   "tokens": 25713
+  }
+ },
+ {
+  "label": "batch-m0-dev",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "seed": 0,
+  "git_commit": "ba4bfba15d059fff303e04fac27c4318193d918a",
+  "time_utc": "2026-11-25T18:47:51+00:00",
+  "stats": {
+   "calls": 0,
+   "cache_hits": 68,
+   "tokens": 0
+  }
+ },
+ {
+  "label": "batch-m2-dev",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "seed": 0,
+  "git_commit": "ba4bfba15d059fff303e04fac27c4318193d918a",
+  "time_utc": "2026-11-25T19:36:01+00:00",
+  "stats": {
+   "calls": 13,
+   "cache_hits": 107,
+   "tokens": 34712
+  }
+ },
+ {
+  "label": "batch-m3-dev",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "seed": 0,
+  "git_commit": "ba4bfba15d059fff303e04fac27c4318193d918a",
+  "time_utc": "2026-11-25T22:52:31+00:00",
+  "stats": {
+   "calls": 49,
+   "cache_hits": 105,
+   "tokens": 129310
+  }
  }
 ]

@@ -8,6 +8,7 @@ from pathlib import Path
 from testpilot.sandbox.runner import Sandbox
 
 TEST_FILE = "test_generated.py"
+MEMORY_ADDRESS = re.compile(r"\b0x[0-9A-Fa-f]{6,}\b")
 SANDBOX_PATH = re.compile(r"[^\s'\"]*testpilot_[A-Za-z0-9_]{6,}")
 
 
@@ -25,12 +26,15 @@ class TestRun:
         return not self.error and not self.failed and bool(self.passed)
 
     def failure_text(self, limit: int = 2500) -> str:
-        """Failure details with the random temp-folder name removed, so prompts cache."""
+        """Failure details without what changes between runs (temp folder, memory addresses).
+
+        These end up in repair prompts; a prompt that differs every run never hits the cache.
+        """
         if self.error:
             text = self.error[-limit:]
         else:
             text = "\n\n".join(f"{n}: {m}" for n, m in self.failed.items())[:limit]
-        return SANDBOX_PATH.sub("<sandbox>", text)
+        return MEMORY_ADDRESS.sub("0x...", SANDBOX_PATH.sub("<sandbox>", text))
 
 
 def run_tests(repo_dir: Path, src: str, test_code: str, timeout: float = 60) -> TestRun:

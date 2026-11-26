@@ -112,3 +112,11 @@ How to check: `pytest tests/test_demo.py`; `python -m testpilot.demo.page` for t
 - **Limit.** 30 units is still small, and a library with very few units may be missing from a 30-unit subset.
 
 How to check: `pytest tests/test_subset.py tests/test_evaluation.py`.
+
+## Step 6: making M2 and M3 start from the same tests
+
+- **What went wrong.** The Step 5.3 note said M2 and M3 start from identical M1 tests because M1 is cached. That was not guaranteed. Each mode replayed M1, and a repair prompt contains the failure message. Python prints memory addresses such as `object at 0x...` in some messages, and these differ on every run, so the prompt missed the cache and the model could answer differently. At least one function started from different tests. The first dev M2 and M3 results were therefore discarded.
+- **Two fixes.** Memory addresses are removed from failure messages, and M2 and M3 now load M1's saved result for each function instead of replaying it. The second one is the real guarantee: it does not depend on every message being stable.
+- **How it was found.** The new LLM calls did not add up: more calls were made than the extra guided rounds explain. Lesson: check that a cache you rely on was actually hit. Reading: any text on controlled experiments and confounding variables.
+
+How to check: `pytest tests/test_shared_base.py`.

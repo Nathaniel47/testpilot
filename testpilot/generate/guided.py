@@ -6,6 +6,7 @@ survived (M3). A candidate is kept only if it passes on the original code AND th
 improves, so a guided round can never make a unit worse.
 """
 
+from dataclasses import replace
 from pathlib import Path
 
 from testpilot.context.builder import Context
@@ -73,11 +74,18 @@ def _improve(client, ctx: Context, repo_dir, src, unit, base: Outcome, signal, m
     return out
 
 
-def run_m2(client, ctx: Context, repo_dir: Path, src: str, unit: dict) -> Outcome:
-    base = modes.run_m1(client, ctx, repo_dir, src)
+def _start(client, ctx, repo_dir, src, base: Outcome | None) -> Outcome:
+    """The M1 result to improve. Pass the saved one so M2 and M3 start from identical tests."""
+    if base is None:
+        return modes.run_m1(client, ctx, repo_dir, src)
+    return replace(base, history=list(base.history))  # never edit the caller's copy
+
+
+def run_m2(client, ctx: Context, repo_dir: Path, src: str, unit: dict, base=None) -> Outcome:
+    base = _start(client, ctx, repo_dir, src, base)
     return _improve(client, ctx, repo_dir, src, unit, base, _coverage_signal, coverage_prompt)
 
 
-def run_m3(client, ctx: Context, repo_dir: Path, src: str, unit: dict) -> Outcome:
-    base = modes.run_m1(client, ctx, repo_dir, src)
+def run_m3(client, ctx: Context, repo_dir: Path, src: str, unit: dict, base=None) -> Outcome:
+    base = _start(client, ctx, repo_dir, src, base)
     return _improve(client, ctx, repo_dir, src, unit, base, _mutation_signal, mutant_prompt)

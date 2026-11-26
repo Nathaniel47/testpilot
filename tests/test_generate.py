@@ -8,8 +8,8 @@ from testpilot.llm.budget import Budget
 from testpilot.llm.cache import Cache
 from testpilot.llm.client import LLMClient
 from testpilot.llm.providers import Completion
-from testpilot.repair.loop import keep_only
-from testpilot.sandbox.pytest_run import run_tests
+from testpilot.repair.loop import finalize, keep_only
+from testpilot.sandbox.pytest_run import TestRun, run_tests
 
 LIB = '''
 def add(a: int, b: int) -> int:
@@ -79,6 +79,25 @@ def test_keep_only_removes_named_tests():
     code = "import pytest\n\n\ndef test_a():\n    assert 1\n\n\ndef test_b():\n    assert 0\n"
     out = keep_only(code, ["test_a"])
     assert "test_a" in out and "test_b" not in out and "import pytest" in out
+
+
+def test_a_parametrized_test_with_one_failing_case_is_dropped_whole():
+    code = """import pytest
+
+
+@pytest.mark.parametrize('x', [1, 2])
+def test_p(x):
+    assert x == 1
+
+
+def test_ok():
+    pass
+"""
+    run = TestRun(passed=["test_p[1]", "test_ok"], failed={"test_p[2]": "boom"})
+    out = finalize(code, run)
+    assert "test_p" not in out and "parametrize" not in out and "def test_ok" in out
+    only_p = TestRun(passed=["test_p[1]"], failed={"test_p[2]": "boom"})
+    assert finalize(code.split("def test_ok")[0], only_p) == ""
 
 
 def test_template_uses_docstring_examples_and_passes(repo):

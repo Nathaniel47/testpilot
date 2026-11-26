@@ -56,7 +56,12 @@ def finalize(code: str, run: TestRun) -> str:
     """Drop failing tests; return "" when nothing passed."""
     if run.error or not run.passed:
         return ""
-    return keep_only(code, [n.split("[")[0] for n in run.passed]) if run.failed else code
+    if not run.failed:
+        return code
+    # A parametrized test goes if any of its cases failed: keeping it would keep a failing test.
+    bad = {n.split("[")[0] for n in run.failed}
+    kept = keep_only(code, [n.split("[")[0] for n in run.passed if n.split("[")[0] not in bad])
+    return kept if count_tests(kept) else ""
 
 
 def repair(client, ctx_text: str, code: str, repo_dir: Path, src: str, rounds: int = MAX_ROUNDS):

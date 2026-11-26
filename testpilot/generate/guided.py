@@ -37,7 +37,8 @@ def _coverage_signal(repo_dir, src, unit, code):
 
 
 def _mutation_signal(repo_dir, src, unit, code):
-    report = score_tests(repo_dir, src, unit, code)
+    # Only the shown half: the held-out half must never reach the model or the keep rule.
+    report = score_tests(repo_dir, src, unit, code, shown_only=True)
     if not report.ok or report.score is None:
         return -1.0, ""
     lines = [

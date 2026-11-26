@@ -27,6 +27,12 @@ def _vals(rows, key):
     return [r[key] for r in rows if r.get(key) is not None]
 
 
+def primary_key(scores: dict[str, dict[str, dict]]) -> str:
+    """The mutation metric modes are ranked on: held-out bugs, if every row has that score."""
+    rows = [r for mode in scores.values() for r in mode.values()]
+    return "unseen_score" if rows and all("unseen_score" in r for r in rows) else "mutation_score"
+
+
 def mode_summary(rows: list[dict], seed: int = 0) -> dict:
     killed = sum((r.get("mutation_score") or 0) * r.get("n_mutants", 0) for r in rows)
     tokens = sum(r.get("tokens", 0) for r in rows)
@@ -37,6 +43,7 @@ def mode_summary(rows: list[dict], seed: int = 0) -> dict:
         "line": _fmt(_vals(rows, "line_cov"), seed),
         "branch": _fmt(_vals(rows, "branch_cov"), seed),
         "mutation": _fmt(_vals(rows, "mutation_score"), seed),
+        "unseen": _fmt(_vals(rows, "unseen_score"), seed),
         "gap": "n/a" if line is None or mut is None else f"{line - mut:+.2f}",
         "tokens_per_unit": f"{tokens / len(rows):.0f}" if rows else "n/a",
         "tokens_per_kill": f"{tokens / killed:.0f}" if killed else "n/a",
@@ -55,23 +62,27 @@ def paired_difference(a: dict, b: dict, key: str, seed: int = 0) -> str:
 
 def comparison_markdown(scores: dict[str, dict[str, dict]], seed: int = 0) -> str:
     head = (
-        "| Mode | Units | With tests | Line cov | Branch cov | Mutation score | "
-        "Cov - mutation gap | Tokens/unit | Tokens/killed mutant |\n"
-        "|---|---|---|---|---|---|---|---|---|\n"
+        "| Mode | Units | With tests | Line cov | Branch cov | Unseen-bug score | "
+        "All-bug score | Cov - all-bug gap | Tokens/unit | Tokens/killed mutant |\n"
+        "|---|---|---|---|---|---|---|---|---|---|\n"
     )
     body = ""
     for mode, rows in scores.items():
         s = mode_summary(list(rows.values()), seed)
         body += (
             f"| {mode.upper()} | {s['units']} | {s['with_tests']} | {s['line']} | {s['branch']} "
-            f"| {s['mutation']} | {s['gap']} | {s['tokens_per_unit']} | {s['tokens_per_kill']} |\n"
+            f"| {s['unseen']} | {s['mutation']} | {s['gap']} "
+            f"| {s['tokens_per_unit']} | {s['tokens_per_kill']} |\n"
         )
     text = "Values are means with 95% bootstrap intervals over units.\n\n" + head + body
-    if "m2" in scores and "m3" in scores:
-        m2, m3 = scores["m2"], scores["m3"]
-        text += (
-            "\nM3 minus M2 on the same units (positive = mutation-guided is better): "
-            f"mutation score {paired_difference(m2, m3, 'mutation_score', seed)}, "
-            f"line coverage {paired_difference(m2, m3, 'line_cov', seed)}.\n"
-        )
+    key = primary_key(scores)
+    name = "unseen-bug score" if key == "unseen_score" else "mutation score"
+    for base in ("m1", "m2"):
+        if base in scores and "m3" in scores:
+            a, b = scores[base], scores["m3"]
+            text += (
+                f"\nM3 minus {base.upper()} on the same units (positive = mutation-guided is "
+                f"better): {name} {paired_difference(a, b, key, seed)}, "
+                f"line coverage {paired_difference(a, b, 'line_cov', seed)}.\n"
+            )
     return text

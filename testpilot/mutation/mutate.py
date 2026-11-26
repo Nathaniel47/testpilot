@@ -9,6 +9,7 @@ from testpilot.context.builder import iter_functions
 from testpilot.mutation.operators import apply_site, find_sites
 
 MAX_MUTANTS = 40
+HOLDOUT_SEED = 20240607
 
 
 @dataclass
@@ -60,6 +61,27 @@ def _parent_body(tree: ast.Module, func: ast.AST) -> list:
         if isinstance(body, list) and func in body:
             return body
     raise ValueError("function not found")
+
+
+def shown_ids(mutants: list[Mutant], key: str) -> set[str]:
+    """The half of a unit's mutants that mutation-guided generation may see.
+
+    The rest are held out for grading. Mutants with the same description stay in one half,
+    because feedback naming one would name the other too. The held-out half is filled first.
+    """
+    groups: dict[tuple, list[str]] = {}
+    for m in mutants:
+        groups.setdefault((m.lineno, m.operator, m.detail), []).append(m.id)
+    order = list(groups.values())
+    random.Random(f"holdout:{HOLDOUT_SEED}:{key}").shuffle(order)
+    shown: list[str] = []
+    n_held = 0
+    for ids in order:
+        if n_held <= len(shown):
+            n_held += len(ids)
+        else:
+            shown += ids
+    return set(shown)
 
 
 def read_file(repo_dir: Path, rel: str) -> str:

@@ -1,15 +1,24 @@
 """Run a unit's tests against each mutant inside one sandbox.
 
-A mutant is killed when the tests fail, error, or time out on it. Before scoring, the tests must
-pass on the unparsed-but-unmutated file; otherwise the number would mean nothing.
+A mutant is killed when the tests fail, error, or time out on it. A timeout is retried once with
+more time first, so a briefly busy machine is not counted as a caught bug. Before scoring, the
+tests must pass on the unparsed-but-unmutated file; otherwise the number would mean nothing.
 """
 
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from testpilot.mutation.mutate import Mutant, baseline_code, make_mutants, read_file
+from testpilot.mutation.mutate import (
+    Mutant,
+    baseline_code,
+    make_mutants,
+    read_file,
+    shown_ids,
+)
 from testpilot.sandbox.pytest_run import TEST_FILE
 from testpilot.sandbox.runner import Sandbox
+
+RETRY_FACTOR = 3
 
 
 @dataclass
@@ -20,6 +29,9 @@ class MutantResult:
     detail: str
     killed: bool
     equivalent: bool = False  # survived the repo's own tests too: probably the same behaviour
+    shown: bool = False  # in the half that mutation-guided generation may see
+    reason: str = ""  # why it counts as killed: "tests", "timeout" or "memory"
+    retried: bool = False  # the first run timed out
 
 
 @dataclass
@@ -43,9 +55,16 @@ class MutationReport:
     @property
     def score(self) -> float | None:
         """killed / (mutants not flagged equivalent); None when there is nothing to score."""
-        if not self.ok or not self.scored:
-            return None
-        return sum(r.killed for r in self.results if not r.equivalent) / self.scored
+        return self._share(self.results)
+
+    @property
+    def unseen_score(self) -> float | None:
+        """The same share over held-out mutants only: bugs no mode was ever told about."""
+        return self._share([r for r in self.results if not r.shown])
+
+    def _share(self, results: list[MutantResult]) -> float | None:
+        kept = [r.killed for r in results if not r.equivalent]
+        return sum(kept) / len(kept) if self.ok and kept else None
 
 
 def sandbox_path(unit_file: str, src: str) -> str:
@@ -60,9 +79,13 @@ def score_tests(
     seed: int = 0,
     limit: int = 40,
     reference_dir: Path | None = None,
+    shown_only: bool = False,
 ) -> MutationReport:
     file_text = read_file(repo_dir, unit["file"])
     mutants = make_mutants(file_text, unit["qualname"], unit["sha256"], seed, limit)
+    shown = shown_ids(mutants, unit["sha256"])
+    if shown_only:
+        mutants = [m for m in mutants if m.id in shown]
     target = sandbox_path(unit["file"], src)
     with Sandbox() as sb:
         sb.copy_tree(repo_dir / src, Path(src).name)
@@ -76,11 +99,31 @@ def score_tests(
         for m in mutants:
             sb.write(target, m.code)
             res = _run(sb, timeout)
-            report.results.append(MutantResult(m.id, m.operator, m.lineno, m.detail, not res.ok))
+            retried = res.timed_out
+            if retried:
+                res = _run(sb, timeout * RETRY_FACTOR)
+            report.results.append(
+                MutantResult(
+                    m.id,
+                    m.operator,
+                    m.lineno,
+                    m.detail,
+                    not res.ok,
+                    shown=m.id in shown,
+                    reason=_kill_reason(res),
+                    retried=retried,
+                )
+            )
         sb.write(target, baseline_code(file_text))
     if reference_dir is not None:
         flag_equivalent(report, mutants, repo_dir, src, unit, reference_dir)
     return report
+
+
+def _kill_reason(res) -> str:
+    if res.ok:
+        return ""
+    return "timeout" if res.timed_out else "memory" if res.memory_exceeded else "tests"
 
 
 def _run(sb: Sandbox, timeout: float):

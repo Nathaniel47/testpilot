@@ -18,8 +18,8 @@ Budget: 6 weeks of evenings and weekends, laptop plus phone only, free-tier APIs
 | Repair loop | Run the tests in the sandbox. On failure send back the error and ask for a fix, at most 3 rounds. Tests that still fail are dropped (and counted). A test that fails on the *unmodified* code is always a bad test, never a bug found. |
 | Mutation testing | **Own small AST mutation engine** as the default (operator swaps such as `+`/`-`, `<`/`<=`, `and`/`or`, constant changes, return and negation changes, condition inversion; seeded sampling; per-mutant timeout). **mutmut** runs in Docker/CI as a cross-check on a subset. Reason: mutmut 3 does not run natively on Windows, and a small engine is easier to explain and test. Equivalent mutants cannot be removed automatically; this is a stated limitation, and mutants that survive the repo's own tests are flagged as likely equivalent. |
 | Coverage | `coverage.py` with branch coverage. |
-| Modes compared | M0 single-shot, no repair. M1 generate plus repair (pass/fail only). M2 **coverage-guided**: loop until coverage stops rising (CoverUp-style); this is the coverage-only comparison. M3 **mutation-guided**: feed surviving mutants back and ask for tests that kill them. Baselines: B0 offline template generator, B1 the repo's own human tests, B2 Pynguin (search-based, no LLM) on a subset if it installs cleanly on the laptop. |
-| Scoring | Automatic only: pass rate on the original code, line and branch coverage, **mutation score** (killed / total mutants not flagged equivalent), the **coverage-vs-mutation gap**, flaky-test rate (3 reruns), LLM tokens per killed mutant. No LLM judge. |
+| Modes compared | M0 single-shot, no repair. M1 generate plus repair (pass/fail only). M2 **coverage-guided**: loop until coverage stops rising (CoverUp-style); this is the coverage-only comparison. M3 **mutation-guided**: feed surviving mutants back and ask for tests that kill them. M3 sees only the **shown** half of each unit's mutants (seeded split); the other half is held out. Baselines: B0 offline template generator, B1 the repo's own human tests, B2 Pynguin (search-based, no LLM) on a subset if it installs cleanly on the laptop. |
+| Scoring | Automatic only: pass rate on the original code, line and branch coverage, **mutation score** (killed / total mutants not flagged equivalent), the **coverage-vs-mutation gap**, flaky-test rate (3 reruns), LLM tokens per killed mutant. Modes are **ranked on the unseen-bug score**: the mutation score over held-out mutants, which neither M3's prompts nor its keep rule ever use. The all-bug score is also reported but favours M3. A mutant run that times out is retried once with 3 times the limit; kill reasons are recorded. No LLM judge. |
 | CLI | `testpilot ingest`, `generate`, `repair`, `mutate`, `report`, `compare`. Plain `argparse`. |
 | GitHub Action | A composite action that runs `testpilot` on a repo's changed functions and posts the mutation score as a job summary. Tested on a small public sample repo with cached LLM responses. |
 | Demo (Step 7) | Hosted page where a visitor picks an example function or pastes one, sees the generated tests, coverage and mutation score. Defaults to the template generator and cached LLM results; live calls are rate-limited and capped. Code runs only in the sandbox with strict limits. |
@@ -57,7 +57,7 @@ flowchart LR
 - **CLI and action** (`testpilot/cli.py`, `action/`).
 
 **Metrics**
-- Mutation score per mode and per repo, with 95% bootstrap confidence intervals over units.
+- Mutation score per mode and per repo, with 95% bootstrap confidence intervals over units. Mode comparisons use the held-out (unseen-bug) mutation score.
 - Line and branch coverage, and the gap between coverage and mutation score.
 - Passing-test rate before and after repair; share of units where generation fails entirely.
 - Cost: tokens and calls per unit, tokens per killed mutant.

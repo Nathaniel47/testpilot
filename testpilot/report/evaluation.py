@@ -9,7 +9,12 @@ import json
 
 from testpilot import config
 from testpilot.report import charts
-from testpilot.report.tables import comparison_markdown, load_scores, mean
+from testpilot.report.tables import (
+    comparison_markdown,
+    load_scores,
+    mean,
+    primary_key,
+)
 from testpilot.score.batch import score_dir
 
 RESULTS = config.ROOT / "results"
@@ -24,19 +29,23 @@ NAMES = {
 }
 
 
+KEY_NAMES = {"unseen_score": "unseen-bug score", "mutation_score": "mutation score"}
+
+
 def split_filter(rows: dict[str, dict], split: str, unit_split: dict[str, str]) -> dict[str, dict]:
     return {k: r for k, r in rows.items() if split == "all" or unit_split.get(k) == split}
 
 
-def seed_table(modes: list[str], seeds: list[int], split: str, unit_split: dict) -> str:
-    """Mean mutation score per seed for modes that have more than one seed scored."""
+def seed_table(
+    modes: list[str], seeds: list[int], split: str, unit_split: dict, key: str = "mutation_score"
+) -> str:
+    """Mean of the ranking metric per seed for modes that have more than one seed scored."""
     lines = []
     for mode in modes:
         runs = {}
         for s in seeds:
             rows = split_filter(load_scores(score_dir(mode, s)), split, unit_split)
-            scored = {u: r["mutation_score"] for u, r in rows.items()
-                      if r.get("mutation_score") is not None}  # fmt: skip
+            scored = {u: r[key] for u, r in rows.items() if r.get(key) is not None}
             if scored:
                 runs[s] = scored
         # Seeds are compared on the units they all scored; otherwise a different set of units
@@ -57,13 +66,13 @@ def seed_table(modes: list[str], seeds: list[int], split: str, unit_split: dict)
             "see the run commands below.\n"
         )
     return (
-        "| Mode | Mutation score per seed | Mean | Std dev over seeds |\n|---|---|---|---|\n"
+        "| Mode | Score per seed | Mean | Std dev over seeds |\n|---|---|---|---|\n"
         + "\n".join(lines)
         + "\n"
     )
 
 
-def repo_table(scores: dict[str, dict]) -> str:
+def repo_table(scores: dict[str, dict], key: str = "mutation_score") -> str:
     repos = sorted({r.get("repo", "?") for rows in scores.values() for r in rows.values()})
     head = "| Library | " + " | ".join(m.upper() for m in scores) + " |\n"
     head += "|---|" + "---|" * len(scores) + "\n"
@@ -71,8 +80,8 @@ def repo_table(scores: dict[str, dict]) -> str:
     for repo in repos:
         cells = []
         for rows in scores.values():
-            v = [r["mutation_score"] for r in rows.values()
-                 if r.get("repo") == repo and r.get("mutation_score") is not None]  # fmt: skip
+            v = [r[key] for r in rows.values()
+                 if r.get("repo") == repo and r.get(key) is not None]  # fmt: skip
             cells.append(f"{mean(v):.2f} (n={len(v)})" if v else "-")
         body += f"| {repo} | " + " | ".join(cells) + " |\n"
     return head + body
@@ -89,23 +98,31 @@ def facts(scores: dict[str, dict]) -> str:
             f"- {mode.upper()}: {len(rs)} units scored, {none} with no passing test, "
             f"{mutants} mutants of which {equiv} flagged likely-equivalent."
         )
+        if any("n_unseen" in r for r in rs):
+            out[-1] += (
+                f" {sum(r.get('n_unseen', 0) for r in rs)} held out; "
+                f"{sum(r.get('n_retried', 0) for r in rs)} mutant runs retried after a timeout, "
+                f"{sum(r.get('n_timeout_kills', 0) for r in rs)} counted as caught by timeout, "
+                f"{sum(r.get('n_memory_kills', 0) for r in rs)} by the memory limit."
+            )
     return "\n".join(out)
 
 
-M3_WARNING = """
-**Do not read M3's mutation score as a fair win.** M3 is shown the mutants that survived, keeps a
-new test file only if its score on them rises, and is then scored on those same mutants. Its score
-therefore cannot fall below that of the M1 tests it started from, and any lead over M1 or M2 is
-biased in its favour, whatever the interval says. M3 also asked for more guided rounds where its
-signal had more left to improve, so compare its tokens per unit too.
+HOLDOUT_NOTE = """
+**Compare modes on the unseen-bug score.** Each function's mutants are split in two by a fixed
+seed. Mutation-guided generation (M3) is shown survivors from one half only and decides what to
+keep using that half only. The unseen-bug score counts the other half, which no mode was told
+about. The all-bug score includes the half M3 saw, so it favours M3: it is listed for
+completeness and for the coverage gap, not for ranking M3.
 """
 
-M3_LIMITATION = """- **M3 is scored on its own feedback.** Mutation-guided generation and scoring
-  use the same mutant sample. M3's mutation score (and so its smaller coverage gap) shows that it
-  can write tests for survivors it is told about, not that those tests catch more unseen bugs. A
-  fair comparison needs bugs M3 never saw: held-out mutants or an independent tool such as mutmut.
-  Neither has been run. M2 has the same bias on line and branch coverage, the signal it is guided
-  by.
+M3_LIMITATION = """- **Unseen bugs are not unrelated bugs.** The held-out mutants come from the same
+  engine and often the same line as mutants M3 was shown, so a test written for a shown bug can
+  catch a neighbouring held-out one. That is a milder advantage than grading on the shown bugs,
+  but the score does not prove M3 finds unrelated kinds of bug; an independent tool such as mutmut
+  would test that and has not been run. Each half is small, so per-function unseen scores are
+  coarse. The all-bug score is biased towards M3, and M2 has the same bias on line and branch
+  coverage, the signal it is guided by.
 """
 
 
@@ -127,19 +144,21 @@ def build(split: str = "dev", seeds: list[int] | None = None, modes: list[str] |
     scores = {m: {u: r for u, r in rows.items() if u in common} for m, rows in scores.items()}
     if not common:
         return None
+    key = primary_key(scores)
     folder = RESULTS / split
     folder.mkdir(parents=True, exist_ok=True)
     charts.coverage_vs_mutation_bars(scores, folder / "chart_coverage_vs_mutation.png")
     # M1 first: its tests never saw a mutant, so its gap is not shrunk by guidance.
     gap_mode = "m1" if "m1" in scores else next(iter(scores))
     charts.gap_scatter(scores[gap_mode], gap_mode, folder / "chart_gap_scatter.png")
-    charts.per_repo_dots(scores, folder / "chart_per_repo.png")
+    charts.per_repo_dots(scores, folder / "chart_per_repo.png", key)
 
     text = f"""# Evaluation ({split} split)
 
 Scoring is fully automatic (tests run in the sandbox; no LLM judge). Primary metric: **mutation
-score**, the share of injected bugs the tests catch. Line and branch coverage are reported beside
-it, because the project's question is how far coverage overstates test quality.
+score**, the share of injected bugs the tests catch. Modes are ranked on bugs held out from
+generation. Line and branch coverage are reported beside it, because the project's question is how
+far coverage overstates test quality.
 
 Modes with scored units here: {", ".join(NAMES[m] for m in scores)}.
 Modes without data are left out, not estimated.
@@ -150,19 +169,19 @@ units so an easier set of units cannot flatter one of them.
 
 ## Results
 
-{comparison_markdown(scores, seeds[0])}{M3_WARNING if "m3" in scores else ""}
+{comparison_markdown(scores, seeds[0])}{HOLDOUT_NOTE if key == "unseen_score" else ""}
 ![coverage vs mutation score](chart_coverage_vs_mutation.png)
 
 ![per-unit gap](chart_gap_scatter.png)
 
 ![by library](chart_per_repo.png)
 
-## By library (mean mutation score)
+## By library (mean {KEY_NAMES[key]})
 
-{repo_table(scores)}
+{repo_table(scores, key)}
 ## Variance over seeds
 
-{seed_table(modes, seeds, split, unit_split)}
+{seed_table(modes, seeds, split, unit_split, key)}
 ## Counts
 
 {facts(scores)}

@@ -71,14 +71,23 @@ def test_limitations_name_the_gaps_honestly(work, units):
         assert phrase in text
 
 
-@pytest.mark.parametrize("mode", ["m1", "m3"])
-def test_report_warns_that_m3_is_scored_on_its_own_feedback(work, units, mode):
-    write_scores(work, mode, 0, [fake_row(u, "toolz", 0.9, 0.5) for u in units])
-    text = evaluation.build("dev", [0], [mode])
+def test_report_ranks_modes_on_unseen_bugs(work, units):
+    for mode, full, unseen in (("m2", 0.5, 0.25), ("m3", 0.9, 0.75)):
+        rows = [fake_row(u, "toolz", 0.9, full) | {"unseen_score": unseen} for u in units]
+        write_scores(work, mode, 0, rows)
+    text = evaluation.build("dev", [0], ["m2", "m3"])
+    assert "Compare modes on the unseen-bug score" in text
+    assert "M3 minus M2" in text and "unseen-bug score 0.50" in text
+    assert "## By library (mean unseen-bug score)" in text and "0.75 (n=6)" in text
     limits = (evaluation.RESULTS / "dev" / "limitations.md").read_text(encoding="utf-8")
-    assert ("fair win" in text) == (mode == "m3")
-    assert ("scored on its own feedback" in limits) == (mode == "m3")
-    assert "Small sample" in limits
+    assert "Unseen bugs are not unrelated bugs" in limits and "Small sample" in limits
+
+
+def test_old_scores_without_unseen_bugs_are_not_presented_as_unseen(work, units):
+    write_scores(work, "m1", 0, [fake_row(u, "toolz", 0.9, 0.5) for u in units])
+    text = evaluation.build("dev", [0], ["m1"])
+    assert "Compare modes on the unseen-bug score" not in text
+    assert "## By library (mean mutation score)" in text
 
 
 def test_evaluate_stops_cleanly_when_budget_is_reached(monkeypatch):

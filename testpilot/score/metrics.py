@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from testpilot.mutation.mutate import make_mutants, read_file, shown_ids
 from testpilot.mutation.runner import score_tests
 from testpilot.sandbox.coverage_run import measure
 from testpilot.sandbox.pytest_run import run_tests
@@ -28,7 +29,18 @@ def score_unit(
     """Metrics for one unit. Units with no passing tests score zero on everything."""
     row = {"unit_id": unit["id"], "has_tests": bool(test_code)}
     if not test_code:
-        return row | {"line_cov": 0.0, "branch_cov": None, "mutation_score": 0.0, "n_mutants": 0}
+        text = read_file(repo_dir, unit["file"])
+        mutants = make_mutants(text, unit["qualname"], unit["sha256"], seed)
+        n_unseen = len(mutants) - len(shown_ids(mutants, unit["sha256"]))
+        return row | {
+            "line_cov": 0.0,
+            "branch_cov": None,
+            "mutation_score": 0.0,
+            "n_mutants": 0,
+            # No tests catch nothing; a unit with no held-out mutant has no score in any mode.
+            "unseen_score": 0.0 if n_unseen else None,
+            "n_unseen": n_unseen,
+        }
     cov = measure(repo_dir, src, unit, test_code)
     mut = score_tests(repo_dir, src, unit, test_code, seed=seed, reference_dir=reference_dir)
     row |= {
@@ -39,6 +51,11 @@ def score_unit(
         "mutation_score": mut.score,
         "n_mutants": mut.total,
         "n_equivalent": mut.total - mut.scored,
+        "unseen_score": mut.unseen_score,
+        "n_unseen": sum(not r.shown for r in mut.results),
+        "n_retried": sum(r.retried for r in mut.results),
+        "n_timeout_kills": sum(r.reason == "timeout" for r in mut.results),
+        "n_memory_kills": sum(r.reason == "memory" for r in mut.results),
         "survivors": [
             {"line": r.lineno, "operator": r.operator, "detail": r.detail}
             for r in mut.results

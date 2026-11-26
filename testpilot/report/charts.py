@@ -40,10 +40,11 @@ def coverage_vs_mutation_bars(scores: dict[str, dict], path: Path, seed: int = 0
         ax.bar(xs, [p[0] for p in pts], width, color=colour, label=label,
                yerr=[[p[1][0] for p in pts], [p[1][1] for p in pts]], capsize=3)  # fmt: skip
     ax.set_xticks(range(len(modes)), [m.upper() for m in modes])
-    ax.set_ylim(0, 1.05)
+    ax.set_ylim(0, 1.18)  # room above the tallest bar for the legend
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_ylabel("Mean over units (1.0 = all)")
     ax.set_title("Line coverage and mutation scores by mode")
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, loc="upper center", ncol=len(series))
     ax.spines[["top", "right"]].set_visible(False)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
